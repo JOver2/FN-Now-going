@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastNexus — Operações Digitais para Restaurantes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: #0A0A0A;
+  color: #E0E0E0;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { display: block; max-width: 100%; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOKENS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --g:       #00FF88;
+  --g-dk:    #00A86B;
+  --bg:      #0A0A0A;
+  --card:    #141414;
+  --card2:   #1A1A1A;
+  --border:  rgba(255,255,255,0.07);
+  --border-g:rgba(0,255,136,0.2);
+  --text:    #E0E0E0;
+  --muted:   #606060;
+  --nav-h:   64px;
+  --max:     1200px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   UTILITÁRIOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.inner   { max-width: var(--max); margin: 0 auto; padding: 0 5%; }
+.sec     { padding: 6rem 0; }
+.sec-alt { background: var(--card); }
+.g       { color: var(--g); }
+.muted   { color: var(--muted); }
+
+.tag {
+  display: inline-block;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--g);
+  border: 1px solid var(--border-g);
+  padding: 0.3rem 0.75rem; border-radius: 2px;
+  margin-bottom: 1.2rem;
+}
+
+h2.sec-title {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 800; line-height: 1.15;
+  letter-spacing: -0.02em; margin-bottom: 1rem;
+}
+.sec-sub {
+  font-size: 0.95rem; color: var(--muted);
+  max-width: 520px; font-weight: 400;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BOTÕES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.btn-g {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--g); color: #000;
+  font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.88rem;
+  padding: 0.82rem 1.8rem; border-radius: 6px;
+  border: none; cursor: pointer;
+  transition: background 0.18s, transform 0.15s;
+}
+.btn-g:hover { background: #1affaa; transform: translateY(-1px); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: transparent; color: var(--muted);
+  font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.85rem;
+  padding: 0.82rem 1.6rem; border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.18s;
+}
+.btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+/* plan button */
+.plan-cta {
+  display: block; text-align: center;
+  background: transparent; color: var(--g);
+  font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.82rem;
+  padding: 0.65rem; border-radius: 5px;
+  border: 1px solid var(--border-g);
+  cursor: pointer; transition: all 0.18s;
+  margin-top: auto;
+}
+.plan-cta:hover { background: var(--g); color: #000; }
+.plan-cta.solid { background: var(--g); color: #000; border-color: var(--g); }
+.plan-cta.solid:hover { background: #1affaa; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%;
+  background: rgba(10,10,10,0.93);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-brand {
+  font-size: 1.2rem; font-weight: 800;
+  letter-spacing: -0.025em; color: var(--text);
+}
+.nav-brand em { font-style: normal; color: var(--g); }
+
+.nav-links {
+  display: flex; align-items: center; gap: 1.8rem;
+}
+.nav-links a {
+  font-size: 0.8rem; font-weight: 500; color: var(--muted);
+  transition: color 0.18s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links .nav-cta {
+  background: var(--g); color: #000 !important;
+  font-weight: 700 !important; padding: 0.42rem 1rem;
+  border-radius: 5px; font-size: 0.78rem !important;
+  transition: background 0.18s;
+}
+.nav-links .nav-cta:hover { background: #1affaa !important; }
+
+/* hamburger */
+.ham {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.ham span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--text); border-radius: 1px; transition: all 0.25s;
+}
+.ham.open span:nth-child(1) { transform: rotate(45deg) translate(4.5px,4.5px); }
+.ham.open span:nth-child(2) { opacity: 0; }
+.ham.open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px,-4.5px); }
+
+.mob-menu {
+  display: none; position: fixed;
+  top: var(--nav-h); left: 0; right: 0; z-index: 199;
+  background: var(--card2); border-bottom: 1px solid var(--border);
+  flex-direction: column; padding: 1rem 5%;
+}
+.mob-menu.open { display: flex; }
+.mob-menu a {
+  font-size: 0.95rem; font-weight: 600; padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border); color: var(--text);
+}
+.mob-menu a:last-child { border: none; color: var(--g); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.hero {
+  padding-top: var(--nav-h);
+  min-height: 100vh;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+}
+
+/* grid decorativo */
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+/* glow verde */
+.hero-glow {
+  position: absolute; pointer-events: none;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(0,255,136,0.07) 0%, transparent 68%);
+  top: 50%; left: 45%; transform: translate(-50%,-50%);
+}
+
+.hero-content {
+  position: relative; z-index: 1;
+  max-width: var(--max); margin: 0 auto; padding: 4rem 5%;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+}
+
+.hero-left {}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--g); margin-bottom: 1.5rem;
+}
+.hero-eyebrow::before {
+  content: ''; width: 24px; height: 1.5px; background: var(--g);
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 800; line-height: 1.08;
+  letter-spacing: -0.03em; margin-bottom: 1.4rem;
+}
+.hero h1 span { color: var(--g); }
+
+.hero-sub {
+  font-size: clamp(0.9rem, 1.4vw, 1rem);
+  color: var(--muted); font-weight: 400;
+  max-width: 480px; margin-bottom: 2.2rem; line-height: 1.7;
+}
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+.hero-right {
+  display: flex; flex-direction: column; gap: 1px;
+}
+
+/* mini cards de stats no hero */
+.hero-stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--g);
+  padding: 1.2rem 1.4rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.hero-stat-card:first-child { border-radius: 8px 8px 0 0; }
+.hero-stat-card:last-child  { border-radius: 0 0 8px 8px; }
+
+.hsc-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: rgba(0,255,136,0.08);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+.hsc-label { font-size: 0.72rem; color: var(--muted); font-weight: 500; margin-bottom: 0.1rem; }
+.hsc-val   { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PROBLEMA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.problem-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+}
+.problem-quote {
+  font-size: clamp(1.2rem, 2.5vw, 1.9rem);
+  font-weight: 700; line-height: 1.4; letter-spacing: -0.015em;
+  color: var(--text);
+}
+.problem-quote strong { color: var(--g); font-weight: 800; }
+
+.problem-items { display: flex; flex-direction: column; gap: 0.75rem; }
+.pitem {
+  display: flex; align-items: flex-start; gap: 0.85rem;
+  padding: 1rem 1.1rem;
+  background: var(--card2); border: 1px solid var(--border);
+  border-radius: 6px; transition: border-color 0.2s;
+}
+.pitem:hover { border-color: var(--border-g); }
+.pitem-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--g); flex-shrink: 0; margin-top: 7px;
+}
+.pitem-text { font-size: 0.85rem; color: #aaa; font-weight: 400; line-height: 1.55; }
+.pitem-text strong { color: var(--text); font-weight: 600; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SOLUÇÃO BPO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bpo-card {
+  background: var(--card2);
+  border: 1px solid var(--border-g);
+  border-radius: 10px;
+  padding: 3rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+}
+.bpo-left {}
+.bpo-left .sec-title { margin-top: 0.5rem; }
+.bpo-right {
+  border-left: 1px solid var(--border);
+  padding-left: 3rem;
+}
+.bpo-right p {
+  font-size: 1.05rem; line-height: 1.75;
+  color: #bbb; font-weight: 400;
+}
+.bpo-right p strong { color: var(--text); font-weight: 600; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   O QUE FAZEMOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.services-grid {
+  display: grid; grid-template-columns: repeat(2,1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden;
+}
+.srv {
+  background: var(--card); padding: 2rem;
+  transition: background 0.2s;
+}
+.srv:hover { background: var(--card2); }
+.srv-num {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+  color: var(--g); margin-bottom: 1rem;
+}
+.srv h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.srv p  { font-size: 0.82rem; color: var(--muted); line-height: 1.6; font-weight: 400; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PLATAFORMAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.plataformas-strip {
+  display: flex; flex-wrap: wrap; gap: 0;
+  border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+}
+.plat-item {
+  flex: 1; min-width: 180px;
+  padding: 1.8rem 1.5rem;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 0.7rem;
+  transition: background 0.2s;
+  text-align: center;
+}
+.plat-item:last-child { border-right: none; }
+.plat-item:hover { background: var(--card2); }
+.plat-logo {
+  font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em;
+  color: var(--text);
+}
+.plat-logo .accent { color: var(--g); }
+.plat-sub { font-size: 0.68rem; color: var(--muted); font-weight: 500; letter-spacing: 0.04em; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PLANOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.plans-toggle {
+  display: flex; gap: 0; margin-bottom: 2.5rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  overflow: hidden; width: fit-content;
+}
+.ptog {
+  padding: 0.55rem 1.5rem;
+  font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600;
+  background: transparent; color: var(--muted);
+  border: none; cursor: pointer; transition: all 0.18s;
+}
+.ptog.on { background: var(--g); color: #000; }
+
+.plans-wrap { display: none; }
+.plans-wrap.show { display: block; }
+
+.plans-grid {
+  display: grid; gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+}
+.plans-grid-4 { grid-template-columns: repeat(4,1fr); }
+.plans-grid-3 { grid-template-columns: repeat(3,1fr); max-width: 860px; }
+
+.plan-card {
+  background: var(--card);
+  padding: 2rem 1.6rem;
+  display: flex; flex-direction: column;
+  transition: background 0.2s;
+}
+.plan-card:hover { background: var(--card2); }
+.plan-card.featured {
+  background: rgba(0,255,136,0.04);
+  border-top: 2px solid var(--g);
+}
+
+.plan-tier {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem;
+}
+.plan-card.featured .plan-tier { color: var(--g); }
+
+.plan-price {
+  font-size: 2.2rem; font-weight: 900; color: var(--text);
+  letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.2rem;
+}
+.plan-price sup { font-size: 1rem; font-weight: 700; vertical-align: super; }
+.plan-price small { font-size: 0.75rem; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+
+.plan-div { height: 1px; background: var(--border); margin: 1.3rem 0; }
+
+.plan-specs { flex: 1; margin-bottom: 1.5rem; }
+.plan-specs li {
+  display: flex; align-items: center; gap: 0.55rem;
+  font-size: 0.8rem; color: #aaa; font-weight: 400; padding: 0.28rem 0;
+}
+.plan-specs li::before {
+  content: ''; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--g); flex-shrink: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   COMO FUNCIONA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.steps-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+}
+.step {
+  background: var(--card); padding: 2rem 1.6rem;
+  transition: background 0.2s;
+}
+.step:hover { background: var(--card2); }
+.step-n {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+  color: var(--g); margin-bottom: 1.1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.step-n::after {
+  content: ''; flex: 1; height: 1px; background: var(--border-g); max-width: 28px;
+}
+.step h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.45rem; }
+.step p  { font-size: 0.8rem; color: var(--muted); line-height: 1.6; font-weight: 400; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BENEFÍCIOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.benefits-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem;
+}
+.benefit-card {
+  background: var(--card2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 2rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+.benefit-card:hover { border-color: var(--border-g); background: var(--card); }
+.benefit-icon {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: rgba(0,255,136,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; margin-bottom: 1rem;
+}
+.benefit-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+.benefit-card p  { font-size: 0.8rem; color: var(--muted); line-height: 1.6; font-weight: 400; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CTA STRIP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.cta-strip {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 5rem 0;
+}
+.cta-inner {
+  max-width: var(--max); margin: 0 auto; padding: 0 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 2rem;
+}
+.cta-left h2 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.4rem;
+}
+.cta-left p { font-size: 0.88rem; color: var(--muted); max-width: 360px; }
+.cta-right { display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-end; }
+.cta-alts { display: flex; gap: 1rem; }
+.cta-alts a { font-size: 0.78rem; color: var(--muted); transition: color 0.18s; }
+.cta-alts a:hover { color: var(--text); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+footer {
+  padding: 3.5rem 0 2rem;
+  border-top: 1px solid var(--border);
+}
+.foot-wrap {
+  max-width: var(--max); margin: 0 auto; padding: 0 5%;
+  display: flex; justify-content: space-between;
+  flex-wrap: wrap; gap: 2.5rem; margin-bottom: 2.5rem;
+}
+.foot-brand { max-width: 240px; }
+.foot-logo {
+  font-size: 1.15rem; font-weight: 800;
+  letter-spacing: -0.025em; margin-bottom: 0.5rem;
+}
+.foot-logo em { font-style: normal; color: var(--g); }
+.foot-brand p { font-size: 0.78rem; color: var(--muted); line-height: 1.65; margin-top: 0.3rem; }
+
+.foot-cols { display: flex; gap: 3.5rem; flex-wrap: wrap; }
+.foot-col h6 {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--g); margin-bottom: 0.9rem;
+}
+.foot-col a {
+  display: block; font-size: 0.8rem; font-weight: 400;
+  color: var(--muted); margin-bottom: 0.45rem; transition: color 0.18s;
+}
+.foot-col a:hover { color: var(--text); }
+
+.foot-bottom {
+  max-width: var(--max); margin: 0 auto; padding: 1.4rem 5% 0;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+  font-size: 0.72rem; color: var(--muted);
+}
+.foot-note {
+  max-width: var(--max); margin: 0.8rem auto 0;
+  padding: 0 5%;
+  font-size: 0.67rem; color: var(--muted); line-height: 1.6; opacity: 0.65;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BOTÃO FLUTUANTE WHATSAPP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.wpp-float {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999;
+  display: flex; align-items: center; gap: 0.6rem;
+  background: #25D366; color: #000;
+  font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.8rem;
+  padding: 0.75rem 1.2rem; border-radius: 50px;
+  box-shadow: 0 4px 24px rgba(37,211,102,0.35);
+  transition: transform 0.18s, box-shadow 0.18s;
+  white-space: nowrap;
+}
+.wpp-float:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 32px rgba(37,211,102,0.5);
+}
+.wpp-float svg { flex-shrink: 0; }
+
+/* oculta texto no mobile menor */
+@media (max-width: 480px) {
+  .wpp-float span { display: none; }
+  .wpp-float { padding: 0.85rem; border-radius: 50%; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCROLL REVEAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.sr { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.sr.in { opacity: 1; transform: none; }
+.sr-left  { opacity: 0; transform: translateX(-24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.sr-left.in { opacity: 1; transform: none; }
+.sr-right { opacity: 0; transform: translateX(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.sr-right.in { opacity: 1; transform: none; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   KEYFRAMES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* logo reveal — letras deslizam e aparecem */
+@keyframes logoSlide {
+  from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+/* cursor piscando na logo */
+@keyframes cursorBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+/* orbs flutuantes */
+@keyframes floatA {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%     { transform: translate(40px,-30px) scale(1.08); }
+  66%     { transform: translate(-20px,20px) scale(0.95); }
+}
+@keyframes floatB {
+  0%,100% { transform: translate(0,0) scale(1); }
+  40%     { transform: translate(-50px,30px) scale(1.1); }
+  70%     { transform: translate(30px,-20px) scale(0.92); }
+}
+@keyframes floatC {
+  0%,100% { transform: translate(0,0); }
+  50%     { transform: translate(20px,40px); }
+}
+/* grid drift suave */
+@keyframes gridDrift {
+  0%,100% { background-position: 0 0; }
+  50%     { background-position: 8px 8px; }
+}
+/* hero entrance escalonado */
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+/* linha verde animada no hero-eyebrow */
+@keyframes lineGrow {
+  from { width: 0; }
+  to   { width: 24px; }
+}
+/* scan line nas seções alt */
+@keyframes scan {
+  0%   { top: -2px; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.3; }
+  100% { top: 100%; opacity: 0; }
+}
+/* pulso suave no border dos cards em destaque */
+@keyframes borderPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,255,136,0); }
+  50%     { box-shadow: 0 0 0 3px rgba(0,255,136,0.08); }
+}
+/* contador de números */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LOGO ANIMADA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.nav-brand .logo-fast,
+.nav-brand .logo-nexus {
+  display: inline-block;
+  opacity: 0;
+  animation: logoSlide 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.nav-brand .logo-fast  { animation-delay: 0.05s; }
+.nav-brand .logo-nexus { animation-delay: 0.2s; color: var(--g); }
+
+.nav-brand .logo-cursor {
+  display: inline-block;
+  width: 2px; height: 1em;
+  background: var(--g);
+  vertical-align: middle;
+  margin-left: 1px;
+  animation:
+    cursorBlink 0.7s step-end 3,
+    logoSlide 0.5s 0.2s forwards;
+  opacity: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ORBS DE FUNDO FLUTUANTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.orb-wrap {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  overflow: hidden;
+}
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(80px);
+}
+.orb-1 {
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, rgba(0,255,136,0.055) 0%, transparent 70%);
+  top: 15%; left: 35%;
+  animation: floatA 18s ease-in-out infinite;
+}
+.orb-2 {
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(0,168,107,0.04) 0%, transparent 70%);
+  top: 55%; left: 65%;
+  animation: floatB 24s ease-in-out infinite;
+}
+.orb-3 {
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(0,255,136,0.035) 0%, transparent 70%);
+  top: 80%; left: 15%;
+  animation: floatC 14s ease-in-out infinite;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO — ENTRADA ESCALONADA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.hero-eyebrow { opacity: 0; animation: heroIn 0.6s 0.3s cubic-bezier(0.22,1,0.36,1) forwards; }
+.hero-eyebrow::before { animation: lineGrow 0.5s 0.55s ease forwards; width: 0; }
+.hero h1      { opacity: 0; animation: heroIn 0.65s 0.45s cubic-bezier(0.22,1,0.36,1) forwards; }
+.hero-sub     { opacity: 0; animation: heroIn 0.6s 0.6s cubic-bezier(0.22,1,0.36,1) forwards; }
+.hero-actions { opacity: 0; animation: heroIn 0.6s 0.75s cubic-bezier(0.22,1,0.36,1) forwards; }
+.hero-right   { opacity: 0; animation: heroIn 0.7s 0.55s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+/* hero stat cards — entrada com delay por índice */
+.hero-stat-card { transition: border-color 0.2s, background 0.2s; }
+.hero-stat-card:nth-child(1) { animation: heroIn 0.5s 0.6s both; }
+.hero-stat-card:nth-child(2) { animation: heroIn 0.5s 0.72s both; }
+.hero-stat-card:nth-child(3) { animation: heroIn 0.5s 0.84s both; }
+.hero-stat-card:nth-child(4) { animation: heroIn 0.5s 0.96s both; }
+.hero-stat-card:hover { border-color: var(--border-g); background: rgba(0,255,136,0.04); }
+
+/* grid drift */
+.hero-grid { animation: gridDrift 20s ease-in-out infinite; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CARDS — MICRO-INTERAÇÕES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* scan line nas seções alt ao hover */
+.pitem        { position: relative; overflow: hidden; }
+.pitem::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,136,0.35), transparent);
+  top: -2px; opacity: 0;
+  transition: none;
+  pointer-events: none;
+}
+.pitem:hover::after { animation: scan 0.5s ease forwards; }
+
+/* serviços */
+.srv { position: relative; overflow: hidden; }
+.srv::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; background: var(--g);
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.srv:hover::before { transform: scaleY(1); }
+
+/* plan card featured — pulso suave */
+.plan-card.featured { animation: borderPulse 3s ease-in-out infinite; }
+
+/* step numbers — cor ao hover */
+.step { cursor: default; }
+.step:hover .step-n { color: var(--g); letter-spacing: 0.2em; transition: letter-spacing 0.3s; }
+
+/* benefit icon rotate suave */
+.benefit-card:hover .benefit-icon {
+  transform: rotate(15deg) scale(1.1);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.benefit-icon { transition: transform 0.3s; }
+
+/* plataforma hover */
+.plat-item { transition: background 0.2s; }
+.plat-item .plat-logo { transition: color 0.2s, transform 0.2s; }
+.plat-item:hover .plat-logo { color: var(--g); transform: translateY(-2px); }
+
+/* botão verde — shimmer */
+.btn-g {
+  position: relative; overflow: hidden;
+}
+.btn-g::after {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: skewX(-20deg);
+  transition: none;
+  pointer-events: none;
+}
+.btn-g:hover::after {
+  animation: shimmer 0.5s ease forwards;
+}
+@keyframes shimmer {
+  from { left: -100%; }
+  to   { left: 160%; }
+}
+
+/* nav brand hover */
+.nav-brand { cursor: default; transition: opacity 0.2s; }
+.nav-brand:hover .logo-nexus { text-shadow: 0 0 18px rgba(0,255,136,0.5); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TAG PULSE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes tagIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+.tag { animation: tagIn 0.4s ease both; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CANVAS DE PARTÍCULAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#particles-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  opacity: 0.45;
+}
+
+.nav, .mob-menu, .hero, section, .cta-strip, footer {
+  position: relative; z-index: 1;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 1024px) {
+  .plans-grid-4 { grid-template-columns: repeat(2,1fr); }
+  .steps-grid   { grid-template-columns: repeat(2,1fr); }
+  .services-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 860px) {
+  .nav-links    { display: none; }
+  .ham          { display: flex; }
+  .hero-content { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-right   { display: none; }
+  .problem-grid { grid-template-columns: 1fr; }
+  .bpo-card     { grid-template-columns: 1fr; }
+  .bpo-right    { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 2rem; }
+  .benefits-grid { grid-template-columns: 1fr 1fr; }
+  .cta-inner    { flex-direction: column; align-items: flex-start; }
+  .cta-right    { align-items: flex-start; }
+  .plans-grid-3 { grid-template-columns: 1fr; max-width: 380px; }
+  .plat-item    { min-width: 140px; }
+}
+@media (max-width: 620px) {
+  .sec { padding: 4.5rem 0; }
+  .plans-grid-4 { grid-template-columns: 1fr; }
+  .steps-grid   { grid-template-columns: 1fr; }
+  .benefits-grid { grid-template-columns: 1fr; }
+  .plataformas-strip { flex-direction: column; }
+  .plat-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .plat-item:last-child { border-bottom: none; }
+  .foot-wrap  { flex-direction: column; }
+  .foot-cols  { gap: 2rem; flex-direction: column; }
+  .foot-bottom { flex-direction: column; text-align: center; }
+  .foot-note  { text-align: center; }
+  .bpo-card   { padding: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── FUNDO ANIMADO ── -->
+<canvas id="particles-canvas"></canvas>
+<div class="orb-wrap">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- ── NAV ── -->
+<header class="nav">
+  <div class="nav-brand"><span class="logo-fast">Fast</span><span class="logo-nexus">Nexus</span><span class="logo-cursor"></span></div>
+  <nav class="nav-links">
+    <a href="#problema">O Problema</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#planos">Planos</a>
+    <a href="#como-funciona">Como funciona</a>
+    <a href="https://wa.me/5511937784725?text=Olá!%20Gostaria%20de%20uma%20análise%20do%20meu%20cardápio." class="nav-cta" target="_blank" rel="noopener">Falar no WhatsApp</a>
+  </nav>
+  <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<nav class="mob-menu" id="mob">
+  <a href="#problema">O Problema</a>
+  <a href="#servicos">Serviços</a>
+  <a href="#planos">Planos</a>
+  <a href="#como-funciona">Como funciona</a>
+  <a href="https://wa.me/5511937784725?text=Olá!%20Gostaria%20de%20uma%20análise%20do%20meu%20cardápio." target="_blank" rel="noopener">Quero uma análise →</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="inicio">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Operações Digitais para Restaurantes</div>
+      <h1>Nós operamos o seu cardápio digital enquanto você cuida da <span>cozinha.</span></h1>
+      <p class="hero-sub">Não vendemos software. Gerenciamos suas ferramentas — iFood, Goomer, Anota AI — para garantir maior conversão e total conforto para o seu cliente.</p>
+      <div class="hero-actions">
+        <a href="https://wa.me/5511937784725?text=Olá!%20Gostaria%20de%20uma%20análise%20do%20meu%20cardápio." class="btn-g" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.824.738 5.476 2.027 7.785L0 32l8.438-2.008A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.627 0-5.085-.706-7.2-1.937l-.516-.304-5.01 1.193 1.24-4.878-.338-.538A13.285 13.285 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.307-9.963c-.4-.2-2.367-1.168-2.733-1.301-.366-.133-.633-.2-.9.2-.267.4-1.033 1.301-1.267 1.568-.233.267-.466.3-.866.1-.4-.2-1.688-.622-3.214-1.984-1.188-1.06-1.99-2.37-2.222-2.77-.233-.4-.025-.616.175-.816.18-.18.4-.467.6-.7.2-.233.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.167-1.233-2.967-.325-.779-.658-.673-.9-.686L9.3 9.3c-.267 0-.7.1-1.067.5C7.867 10.2 6.8 11.2 6.8 13.167s1.333 3.833 1.52 4.1c.187.267 2.627 4.017 6.367 5.633.89.384 1.585.614 2.126.786.894.285 1.707.244 2.35.148.717-.107 2.2-.9 2.51-1.768.31-.867.31-1.61.217-1.768-.093-.16-.34-.26-.74-.46z"/></svg>
+          Quero uma análise do meu cardápio
+        </a>
+        <a href="#planos" class="btn-ghost">Ver planos</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-card">
+        <div class="hsc-icon">◈</div>
+        <div>
+          <div class="hsc-label">Modelo de trabalho</div>
+          <div class="hsc-val">BPO de Operações Digitais</div>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hsc-icon">◉</div>
+        <div>
+          <div class="hsc-label">Plataformas operadas</div>
+          <div class="hsc-val">iFood · Goomer · Anota AI · e mais</div>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hsc-icon">◐</div>
+        <div>
+          <div class="hsc-label">Prazo de entrega</div>
+          <div class="hsc-val">Em até 24h*</div>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hsc-icon">◆</div>
+        <div>
+          <div class="hsc-label">Cobertura</div>
+          <div class="hsc-val">Todo o Brasil · 100% remoto</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── O PROBLEMA ── -->
+<section class="sec sec-alt" id="problema">
+  <div class="inner">
+    <div class="problem-grid">
+      <div>
+        <div class="tag sr">O Problema</div>
+        <p class="problem-quote sr">
+          Você já tem as ferramentas,<br>
+          mas <strong>não tem tempo</strong><br>para operá-las.
+        </p>
+      </div>
+      <div class="problem-items sr">
+        <div class="pitem">
+          <div class="pitem-dot"></div>
+          <div class="pitem-text"><strong>Preços desatualizados</strong> — clientes pedem itens com valor errado e a operação perde margem.</div>
+        </div>
+        <div class="pitem">
+          <div class="pitem-dot"></div>
+          <div class="pitem-text"><strong>Áreas de entrega mal configuradas</strong> — pedidos fora do raio ideal comprometem o tempo e o custo de entrega.</div>
+        </div>
+        <div class="pitem">
+          <div class="pitem-dot"></div>
+          <div class="pitem-text"><strong>Cardápio desorganizado</strong> — fotos ruins, descrições vagas e categorias confusas reduzem o ticket médio.</div>
+        </div>
+        <div class="pitem">
+          <div class="pitem-dot"></div>
+          <div class="pitem-text"><strong>Resultado:</strong> vendas perdidas, cliente frustrado e dono sobrecarregado com tecnologia.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOLUÇÃO BPO ── -->
+<section class="sec" id="solucao">
+  <div class="inner">
+    <div class="bpo-card sr">
+      <div class="bpo-left">
+        <div class="tag">A Solução</div>
+        <h2 class="sec-title">Seu departamento de operações digitais.</h2>
+        <a href="https://wa.me/5511937784725?text=Olá!%20Gostaria%20de%20uma%20análise%20do%20meu%20cardápio." class="btn-g" target="_blank" rel="noopener" style="margin-top:1.5rem">Falar com a equipe →</a>
+      </div>
+      <div class="bpo-right">
+        <p>A FastNexus é o seu <strong>BPO de operações digitais</strong>. Cuidamos da engenharia por trás da tela — configurações, atualizações, otimizações — enquanto você foca no que faz de melhor: <strong>servir bem e garantir a qualidade do produto.</strong></p>
+        <p style="margin-top:1rem">Nenhum software para aprender. Nenhum suporte técnico para ligar. Você envia uma mensagem, a gente resolve.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── O QUE FAZEMOS ── -->
+<section class="sec sec-alt" id="servicos">
+  <div class="inner">
+    <div class="sec-header sr">
+      <div class="tag">Serviços</div>
+      <h2 class="sec-title">O que fazemos por você.</h2>
+      <p class="sec-sub">Operação completa das suas plataformas de delivery e cardápio digital.</p>
+    </div>
+    <div class="services-grid sr">
+      <div class="srv">
+        <div class="srv-num">01</div>
+        <h4>Configuração de Especialista</h4>
+        <p>Ajustamos áreas de entrega, taxas e horários para que você não perca dinheiro em pedidos fora do raio ou fora do horário ideal.</p>
+      </div>
+      <div class="srv">
+        <div class="srv-num">02</div>
+        <h4>Cardápio Vendedor</h4>
+        <p>Organizamos categorias, inserimos descrições objetivas e orientamos sobre fotos para aumentar o ticket médio e a taxa de conversão. <em style="color:var(--muted);font-size:0.78rem">(Fotos fornecidas pelo estabelecimento.)</em></p>
+      </div>
+      <div class="srv">
+        <div class="srv-num">03</div>
+        <h4>Gestão de Preços</h4>
+        <p>Atualização rápida de valores em todas as plataformas simultaneamente. Você avisa uma vez — a gente atualiza tudo.</p>
+      </div>
+      <div class="srv">
+        <div class="srv-num">04</div>
+        <h4>Otimização de Conversão</h4>
+        <p>Analisamos onde o cliente está travando no fluxo de pedido e ajustamos configurações para reduzir abandono e aumentar pedidos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PLATAFORMAS ── -->
+<section class="sec" id="plataformas">
+  <div class="inner">
+    <div class="sec-header sr" style="margin-bottom:2rem">
+      <div class="tag">Plataformas</div>
+      <h2 class="sec-title">Ferramentas que operamos.</h2>
+    </div>
+    <div class="plataformas-strip sr">
+      <div class="plat-item">
+        <div class="plat-logo">i<span class="accent">Food</span></div>
+        <div class="plat-sub">Delivery & Cardápio</div>
+      </div>
+      <div class="plat-item">
+        <div class="plat-logo">Goomer</div>
+        <div class="plat-sub">Cardápio Digital</div>
+      </div>
+      <div class="plat-item">
+        <div class="plat-logo">Anota <span class="accent">AI</span></div>
+        <div class="plat-sub">Atendimento & Pedidos</div>
+      </div>
+      <div class="plat-item">
+        <div class="plat-logo">Cardápio<span class="accent">Web</span></div>
+        <div class="plat-sub">Cardápio Online</div>
+      </div>
+      <div class="plat-item">
+        <div class="plat-logo" style="font-size:1rem;color:var(--muted)">+ outras</div>
+        <div class="plat-sub">WhatsApp Business e mais</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PLANOS ── -->
+<section class="sec sec-alt" id="planos">
+  <div class="inner">
+    <div class="sec-header sr">
+      <div class="tag">Planos</div>
+      <h2 class="sec-title">Transparência em cada centavo.</h2>
+      <p class="sec-sub">Setup único para começar ou manutenção mensal para manter tudo atualizado.</p>
+    </div>
+
+    <div class="plans-toggle sr">
+      <button class="ptog on" id="ts" onclick="switchPlan('setup')">Configuração única</button>
+      <button class="ptog"    id="tm" onclick="switchPlan('mensal')">Manutenção mensal</button>
+    </div>
+
+    <!-- SETUP -->
+    <div class="plans-wrap show" id="pw-setup">
+      <div class="plans-grid plans-grid-4">
+        <div class="plan-card">
+          <div class="plan-tier">Essencial</div>
+          <div class="plan-price"><sup>R$</sup>150<small> único</small></div>
+          <div class="plan-div"></div>
+          <ul class="plan-specs">
+            <li>1 plataforma</li>
+            <li>Até 100 itens</li>
+            <li>Entrega em até 24h*</li>
+          </ul>
+          <a href="https://wa.me/5511937784725?text=Olá!%20Quero%20contratar%20o%20plano%20Essencial%20(R$150)." class="plan-cta" target="_blank" rel="noopener">Contratar</a>
+        </div>
+        <div class="plan-card">
+          <div class="plan-tier">Essencial+</div>
+          <div class="plan-price"><sup>R$</sup>200<small> único</small></div>
+          <div class="plan-div"></div>
+          <ul class="plan-specs">
+            <li>1 plataforma</li>
+            <li>Até 200 itens</li>
+            <li>Entrega em até 24h*</li>
+          </ul>
+          <a href="https://wa.me/5511937784725?text=Olá!%20Quero%20contratar%20o%20plano%20Essencial%2B%20(R$200)." class="plan-cta" target="_blank" rel="noopener">Contratar</a>
+        </div>
+        <div class="plan-card featured">
+          <div class="plan-tier">Profissional</div>
+          <div class="plan-price"><sup>R$</sup>279<small>,90 único</small></div>
+          <div class="plan-div"></div>
+          <ul class="plan-specs">
+            <li>2 plataformas</li>
+            <li>Até 200 itens</li>
+            <li>Entrega em até 24h*</li>
+          </ul>
+          <a href="https://wa.me/5511937784725?text=Olá!%20Quero%20contratar%20o%20plano%20Profissional%20(R$279,90)." class="plan-cta solid" target="_blank" rel="noopener">Contratar</a>
+        </div>
+        <div class="plan-card">
+          <div class="plan-tier">Profissional+</div>
+          <div class="plan-price"><sup>R$</sup>329<small>,90 único</small></div>
+          <div class="plan-div"></div>
+          <ul class="plan-specs">
+            <li>3+ plataformas</li>
+            <li>Até 200 itens</li>
+            <li>Entrega em até 24h*</li>
+          </ul>
+          <a href="https://wa.me/5511937784725?text=Olá!%20Quero%20contratar%20o%20plano%20Profissional%2B%20(R$329,90)." class="plan-cta" target="_blank" rel="noopener">Contratar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENSAL -->
+    <div class="plans-wrap" id="pw-mensal">
+      <div class="plans-grid plans-grid-3">
+        <div class="plan-card">
+          <div class="plan-tier">Básico</div>
+          <div class="plan-price"><sup>R$</sup>50<small>/mês</small></div>
+          <div class="plan-div"></div>
+          <ul class="plan-specs">
+            <li>1 plataforma</li>
+            <li>Até 10 alterações/mês</li>
+            <li>Suporte via WhatsApp</li>
+          </ul>
+          <a href="https://wa.me/5511937784725?text=Olá!%20Quero%20assinar%20o%20plano%20Básico%20de%20manutenção%20(R$50/mês)." class="plan-cta" target="_blank" rel="noopener">Assinar</a>
+        </div>
+        <div class="plan-card featured">
+          <div class="plan-tier">Duo</div>
+          <div class="plan-price"><sup>R$</sup>80<small>/mês</small></div>
+          <div class="plan-div"></div>
+          <ul class="plan-specs">
+            <li>2 plataformas</li>
+            <li>Até 20 alterações/mês</li>
+            <li>Suporte prioritário</li>
+          </ul>
+          <a href="https://wa.me/5511937784725?text=Olá!%20Quero%20assinar%20o%20plano%20Duo%20de%20manutenção%20(R$80/mês)." class="plan-cta solid" target="_blank" rel="noopener">Assinar</a>
+        </div>
+        <div class="plan-card">
+          <div class="plan-tier">Completo</div>
+          <div class="plan-price"><sup>R$</sup>100<small>/mês</small></div>
+          <div class="plan-div"></div>
+          <ul class="plan-specs">
+            <li>3+ plataformas</li>
+            <li>Alterações ilimitadas</li>
+            <li>Suporte prioritário</li>
+          </ul>
+          <a href="https://wa.me/5511937784725?text=Olá!%20Quero%20assinar%20o%20plano%20Completo%20de%20manutenção%20(R$100/mês)." class="plan-cta" target="_blank" rel="noopener">Assinar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMO FUNCIONA ── -->
+<section class="sec" id="como-funciona">
+  <div class="inner">
+    <div class="sec-header sr">
+      <div class="tag">Processo</div>
+      <h2 class="sec-title">Como funciona.</h2>
+    </div>
+    <div class="steps-grid sr">
+      <div class="step">
+        <div class="step-n">01</div>
+        <h4>Envie o cardápio</h4>
+        <p>Mande seu cardápio atual via WhatsApp — foto, PDF ou texto. Qualquer formato funciona.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">02</div>
+        <h4>Escolha o plano</h4>
+        <p>Indicamos o plano ideal com base nas plataformas que você usa e no tamanho do cardápio.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">03</div>
+        <h4>A gente opera</h4>
+        <p>A FastNexus configura, organiza e otimiza tudo nas plataformas. Você não precisa tocar em nada.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">04</div>
+        <h4>Cardápio no ar</h4>
+        <p>Cardápio pronto e ativado em até 24h*. Para manutenção contínua, basta assinar um plano mensal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BENEFÍCIOS ── -->
+<section class="sec sec-alt" id="beneficios">
+  <div class="inner">
+    <div class="sec-header sr">
+      <div class="tag">Benefícios</div>
+      <h2 class="sec-title">O que muda na sua operação.</h2>
+    </div>
+    <div class="benefits-grid sr">
+      <div class="benefit-card">
+        <div class="benefit-icon">◱</div>
+        <h4>Tempo livre para o dono</h4>
+        <p>Pare de brigar com sistemas e interfaces. O seu tempo é para a cozinha e para os clientes — não para tecnologia.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">◈</div>
+        <h4>Mais pedidos, mais vendas</h4>
+        <p>Cardápio organizado e bem configurado converte mais. Cada ajuste que fazemos é orientado a aumentar o ticket médio.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">◎</div>
+        <h4>Cliente satisfeito</h4>
+        <p>Pedido correto, preço certo, entrega no prazo. Quando a operação digital funciona, o cliente volta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA STRIP ── -->
+<div class="cta-strip">
+  <div class="cta-inner">
+    <div class="cta-left sr">
+      <h2>Pronto para ter uma operação digital que funciona?</h2>
+      <p>Envie seu cardápio pelo WhatsApp e receba uma análise gratuita em minutos.</p>
+    </div>
+    <div class="cta-right sr">
+      <a href="https://wa.me/5511937784725?text=Olá!%20Gostaria%20de%20uma%20análise%20do%20meu%20cardápio." class="btn-g" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.824.738 5.476 2.027 7.785L0 32l8.438-2.008A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.627 0-5.085-.706-7.2-1.937l-.516-.304-5.01 1.193 1.24-4.878-.338-.538A13.285 13.285 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.307-9.963c-.4-.2-2.367-1.168-2.733-1.301-.366-.133-.633-.2-.9.2-.267.4-1.033 1.301-1.267 1.568-.233.267-.466.3-.866.1-.4-.2-1.688-.622-3.214-1.984-1.188-1.06-1.99-2.37-2.222-2.77-.233-.4-.025-.616.175-.816.18-.18.4-.467.6-.7.2-.233.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.167-1.233-2.967-.325-.779-.658-.673-.9-.686L9.3 9.3c-.267 0-.7.1-1.067.5C7.867 10.2 6.8 11.2 6.8 13.167s1.333 3.833 1.52 4.1c.187.267 2.627 4.017 6.367 5.633.89.384 1.585.614 2.126.786.894.285 1.707.244 2.35.148.717-.107 2.2-.9 2.51-1.768.31-.867.31-1.61.217-1.768-.093-.16-.34-.26-.74-.46z"/></svg>
+        Quero uma análise do meu cardápio
+      </a>
+      <div class="cta-alts">
+        <a href="mailto:contato@fastnexus.com.br">contato@fastnexus.com.br</a>
+        <a href="https://instagram.com/fastnexusbr" target="_blank" rel="noopener">@fastnexusbr</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="foot-wrap">
+    <div class="foot-brand">
+      <div class="foot-logo">Fast<em>Nexus</em></div>
+      <p>BPO de operações digitais para restaurantes e comércios de alimentação. Atendemos em todo o Brasil.</p>
+    </div>
+    <div class="foot-cols">
+      <div class="foot-col">
+        <h6>Serviços</h6>
+        <a href="#servicos">O que fazemos</a>
+        <a href="#planos">Configuração única</a>
+        <a href="#planos">Manutenção mensal</a>
+        <a href="#como-funciona">Como funciona</a>
+      </div>
+      <div class="foot-col">
+        <h6>Contato</h6>
+        <a href="https://wa.me/5511937784725" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://instagram.com/fastnexusbr" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/people/Fast-Nexus/61576614941328/" target="_blank" rel="noopener">Siga no Facebook</a>
+        <a href="mailto:contato@fastnexus.com.br">E-mail</a>
+      </div>
+      <div class="foot-col">
+        <h6>Empresa</h6>
+        <a href="https://fastnexus.com.br">fastnexus.com.br</a>
+        <a href="#">Seg–Sex, 9h–18h</a>
+        <a href="#">Uberaba, MG</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 FastNexus. Todos os direitos reservados.</span>
+    <span>CNPJ em processo de formalização</span>
+  </div>
+  <p class="foot-note">
+    * Prazo médio de entrega: até 24 horas úteis. Cardápios com mais de 200 itens podem ter prazo diferenciado — consultar antes do início.
+  </p>
+</footer>
+
+<!-- ── BOTÃO FLUTUANTE WHATSAPP ── -->
+<a class="wpp-float" href="https://wa.me/5511937784725?text=Olá!%20Gostaria%20de%20uma%20análise%20do%20meu%20cardápio." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.824.738 5.476 2.027 7.785L0 32l8.438-2.008A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.627 0-5.085-.706-7.2-1.937l-.516-.304-5.01 1.193 1.24-4.878-.338-.538A13.285 13.285 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.307-9.963c-.4-.2-2.367-1.168-2.733-1.301-.366-.133-.633-.2-.9.2-.267.4-1.033 1.301-1.267 1.568-.233.267-.466.3-.866.1-.4-.2-1.688-.622-3.214-1.984-1.188-1.06-1.99-2.37-2.222-2.77-.233-.4-.025-.616.175-.816.18-.18.4-.467.6-.7.2-.233.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.167-1.233-2.967-.325-.779-.658-.673-.9-.686L9.3 9.3c-.267 0-.7.1-1.067.5C7.867 10.2 6.8 11.2 6.8 13.167s1.333 3.833 1.52 4.1c.187.267 2.627 4.017 6.367 5.633.89.384 1.585.614 2.126.786.894.285 1.707.244 2.35.148.717-.107 2.2-.9 2.51-1.768.31-.867.31-1.61.217-1.768-.093-.16-.34-.26-.74-.46z"/></svg>
+  <span>Quero uma análise do meu cardápio</span>
+</a>
+
+<script>
+// ── MENU MOBILE ──
+const ham = document.getElementById('ham');
+const mob = document.getElementById('mob');
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  mob.classList.toggle('open');
+});
+mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  ham.classList.remove('open');
+  mob.classList.remove('open');
+}));
+
+// ── TOGGLE PLANOS ──
+function switchPlan(t) {
+  const ts = document.getElementById('ts');
+  const tm = document.getElementById('tm');
+  const ps = document.getElementById('pw-setup');
+  const pm = document.getElementById('pw-mensal');
+  if (t === 'setup') {
+    ps.classList.add('show'); pm.classList.remove('show');
+    ts.classList.add('on');   tm.classList.remove('on');
+  } else {
+    pm.classList.add('show'); ps.classList.remove('show');
+    tm.classList.add('on');   ts.classList.remove('on');
+  }
+}
+
+// ── SCROLL REVEAL com stagger nos grids ──
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const children = el.querySelectorAll(
+      '.plan-card, .step, .srv, .benefit-card, .pitem, .plat-item'
+    );
+    if (children.length) {
+      children.forEach((c, i) => {
+        c.style.opacity = '0';
+        c.style.transform = 'translateY(16px)';
+        c.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        setTimeout(() => {
+          c.style.opacity = '1';
+          c.style.transform = 'none';
+        }, i * 75 + 80);
+      });
+    }
+    el.classList.add('in');
+    io.unobserve(el);
+  });
+}, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+document.querySelectorAll('.sr, .sr-left, .sr-right').forEach(el => io.observe(el));
+
+// ── PARTÍCULAS VERDES ──
+(function() {
+  const canvas = document.getElementById('particles-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  for (let i = 0; i < 40; i++) {
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.3 + 0.3,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.2,
+      alpha: Math.random() * 0.4 + 0.07,
+      phase: Math.random() * Math.PI * 2,
+    });
+  }
+
+  function drawLines() {
+    const D = 120;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d  = Math.sqrt(dx*dx + dy*dy);
+        if (d < D) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(0,255,136,${(1 - d/D) * 0.1})`;
+          ctx.lineWidth = 0.4;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  let raf;
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    drawLines();
+    particles.forEach(p => {
+      p.phase += 0.016;
+      const a = p.alpha * (0.65 + 0.35 * Math.sin(p.phase));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,255,136,${a})`;
+      ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    });
+    raf = requestAnimationFrame(tick);
+  }
+  tick();
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(raf); else tick();
+  });
+})();
+</script>

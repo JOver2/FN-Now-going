@@ -1,1479 +1,1045 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FastNexus · Gestão de catálogos digitais</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Favicons gerados pelo favicon.io -->
-     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-     <link rel="manifest" href="/site.webmanifest">
-     <link rel="shortcut icon" href="/favicon.ico">
-<title>FastNexus — Operações Digitais para Restaurantes</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Meta Pixel Code -->
-<script>
-data-cfasync="false"
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '4397773040447427');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=4397773040447427&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastNexus · Menos tempo operando, mais tempo vendendo</title>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32"  href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16"  href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Meta Pixel -->
+  <script data-cfasync="false">
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','4397773040447427');fbq('track','PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=4397773040447427&ev=PageView&noscript=1"/></noscript>
+
 <style>
-        :root {
-            --green: #00FF88;
-            --green-dim: rgba(0,255,136,0.15);
-            --green-glow: rgba(0,255,136,0.35);
-            --bg: #0A0A0A;
-            --bg2: #111111;
-            --bg3: #1A1A1A;
-            --text: #E0E0E0;
-            --muted: #B0B0B0;
-            --border: rgba(0,255,136,0.18);
-        }
+/* ══════════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════════ */
+:root{
+  --g:#00FF88; --g10:rgba(0,255,136,.10); --g20:rgba(0,255,136,.20);
+  --gglow:rgba(0,255,136,.38);
+  --bg:#09090B; --bg2:#111113; --bg3:#18181B;
+  --tx:#EDEDED; --mu:#A1A1AA; --bd:rgba(0,255,136,.15);
+  --r:20px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;
+  line-height:1.6;overflow-x:hidden;opacity:0;
+  animation:bodyIn .5s ease .05s forwards}
+@keyframes bodyIn{to{opacity:1}}
+a{text-decoration:none}
+img{max-width:100%;display:block}
 
-        *, *::before, *::after {
-            margin: 0; padding: 0;
-            box-sizing: border-box;
-        }
+/* ══════════════════════════════════════════════
+   PARTICLES
+══════════════════════════════════════════════ */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.38}
 
-        html { scroll-behavior: smooth; }
+/* ══════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════ */
+.wrap{max-width:1240px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:2}
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-            opacity: 0;
-            animation: fadeInBody 0.6s ease-out 0.1s forwards;
-        }
+/* ══════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════ */
+header{position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  background:rgba(9,9,11,.9);border-bottom:1px solid var(--bd);
+  transition:box-shadow .3s}
+header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:.9rem 0}
+.logo{font-size:1.7rem;font-weight:800;letter-spacing:-.04em;cursor:default}
+.logo em{color:var(--g);font-style:normal}
+.nl{display:flex;gap:1.8rem;align-items:center}
+.nl a{color:var(--mu);font-weight:500;font-size:.9rem;
+  transition:color .2s;position:relative}
+.nl a:not(.nc)::after{content:'';position:absolute;bottom:-3px;left:0;
+  width:0;height:1.5px;background:var(--g);transition:width .3s}
+.nl a:not(.nc):hover{color:var(--tx)}
+.nl a:not(.nc):hover::after{width:100%}
+.nc{background:var(--g);color:var(--bg)!important;font-weight:700;
+  font-size:.85rem;padding:.45rem 1.1rem;border-radius:40px;
+  transition:transform .2s,box-shadow .2s}
+.nc:hover{transform:translateY(-2px);box-shadow:0 6px 18px var(--gglow)}
 
-        @keyframes fadeInBody { to { opacity: 1; } }
+/* burger */
+.bg2{display:none;flex-direction:column;gap:5px;cursor:pointer;
+  background:none;border:none;padding:4px}
+.bg2 span{display:block;width:22px;height:2px;background:var(--tx);
+  border-radius:2px;transition:all .3s cubic-bezier(.4,0,.2,1)}
+.bg2.open span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--g)}
+.bg2.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.bg2.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--g)}
+.mm{display:none;flex-direction:column;background:rgba(9,9,11,.97);
+  backdrop-filter:blur(16px);border-top:1px solid var(--bd);
+  overflow:hidden;max-height:0;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+.mm.open{max-height:400px}
+.mm a{color:var(--tx);font-size:1rem;font-weight:500;padding:.85rem 1.5rem;
+  border-bottom:1px solid rgba(255,255,255,.04);display:block;transition:all .2s}
+.mm a:hover{color:var(--g);padding-left:2rem}
+.mm-cta{margin:1rem 1.5rem .5rem;background:var(--g)!important;
+  color:var(--bg)!important;text-align:center;font-weight:700;
+  border-radius:40px;padding:.75rem!important;border-bottom:none!important}
+.mm-cta:hover{background:#00e07a!important;padding-left:1.5rem!important}
 
-        /* ── CANVAS PARTICLES ── */
-        #particles-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.45;
-        }
+/* ══════════════════════════════════════════════
+   HERO — 100%
+══════════════════════════════════════════════ */
+.hero{
+  min-height:calc(100vh - 58px);
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  text-align:center;
+  padding:5rem 0 4rem;
+  position:relative;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+/* subtle radial glow behind text */
+.hero::before{
+  content:'';position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-60%);
+  width:min(700px,90vw);height:min(700px,90vw);
+  background:radial-gradient(circle,rgba(0,255,136,.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--g10);border:1px solid var(--bd);
+  color:var(--g);font-size:.72rem;font-weight:700;
+  padding:.3rem .9rem;border-radius:40px;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:1.8rem;
+  animation:badgePulse 3s ease-in-out infinite;
+}
+@keyframes badgePulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,.3)}
+  50%{box-shadow:0 0 0 8px rgba(0,255,136,0)}
+}
+.hero-brand{
+  font-size:clamp(1rem,2vw,1.35rem);
+  font-weight:700;color:var(--g);letter-spacing:.02em;
+  margin-bottom:.6rem;
+}
+.hero-tagline{
+  font-size:clamp(2.2rem,6vw,5rem);
+  font-weight:900;letter-spacing:-.04em;
+  line-height:1.1;
+  max-width:900px;
+  margin:0 auto 2rem;
+}
+/* rotating phrase slot */
+.rslot{
+  display:block;
+  min-height:1.1em;
+  position:relative;
+  overflow:hidden;
+}
+.rphrase{
+  display:block;
+  transition:none;
+}
+.rphrase.out{animation:pOut .3s ease forwards}
+.rphrase.in {animation:pIn  .4s ease forwards}
+@keyframes pOut{to{opacity:0;transform:translateY(-16px)}}
+@keyframes pIn {from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 
-        /* ── GLOW CURSOR (desktop only) ── */
-        .cursor-glow {
-            width: 300px; height: 300px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,255,136,0.07) 0%, transparent 70%);
-            position: fixed;
-            pointer-events: none;
-            transform: translate(-50%,-50%);
-            z-index: 1;
-            transition: opacity 0.3s;
-        }
+.hero-sub{
+  font-size:clamp(.95rem,1.8vw,1.15rem);color:var(--mu);
+  max-width:580px;margin:0 auto 2.8rem;line-height:1.75;
+}
+.hero-acts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
 
-        /* ── LAYOUT ── */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            position: relative;
-            z-index: 2;
-        }
+/* buttons */
+.btn-p{
+  display:inline-flex;align-items:center;gap:.55rem;
+  background:var(--g);color:var(--bg);
+  font-weight:700;font-size:.95rem;
+  padding:.9rem 2rem;border-radius:40px;
+  border:none;cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+  font-family:'Inter',sans-serif;
+}
+.btn-p::after{content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,.18);
+  transform:translateX(-110%) skewX(-15deg);transition:transform .45s}
+.btn-p:hover::after{transform:translateX(110%) skewX(-15deg)}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 10px 28px var(--gglow)}
+.btn-o{
+  display:inline-flex;align-items:center;gap:.55rem;
+  background:transparent;border:1.5px solid rgba(255,255,255,.15);
+  color:var(--mu);font-weight:600;font-size:.95rem;
+  padding:.9rem 2rem;border-radius:40px;
+  transition:all .25s;
+}
+.btn-o:hover{border-color:var(--g);color:var(--g);transform:translateY(-2px)}
 
-        /* ── NAVBAR ── */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            background: rgba(10,10,10,0.85);
-            border-bottom: 1px solid var(--border);
-            transition: box-shadow 0.3s;
-        }
-        header.scrolled {
-            box-shadow: 0 4px 24px rgba(0,255,136,0.08);
-        }
+/* ══════════════════════════════════════════════
+   PLATFORM TICKER
+══════════════════════════════════════════════ */
+.ticker-wrap{
+  border-top:1px solid var(--bd);
+  border-bottom:1px solid var(--bd);
+  background:var(--bg2);
+  overflow:hidden;
+  padding:.9rem 0;
+  position:relative;z-index:2;
+  /* fade edges */
+  mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%);
+}
+.ticker-track{
+  display:flex;
+  width:max-content;
+  animation:tickerMove 28s linear infinite;
+}
+.ticker-track:hover{animation-play-state:paused}
+@keyframes tickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:.65rem;
+  white-space:nowrap;
+  padding:0 2.5rem;
+  font-size:.88rem;font-weight:600;color:var(--mu);
+  letter-spacing:.04em;
+  transition:color .2s;
+}
+.ticker-item:hover{color:var(--g)}
+.ticker-item .dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--g);opacity:.5;flex-shrink:0;
+}
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.1rem 0;
-        }
+/* ══════════════════════════════════════════════
+   SECTION SHARED
+══════════════════════════════════════════════ */
+.sec{padding:5.5rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.sbadge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--g);background:var(--g10);border:1px solid var(--bd);
+  padding:.3rem .9rem;border-radius:40px;margin-bottom:1rem;
+}
+.stitle{
+  font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;
+  letter-spacing:-.03em;margin-bottom:.8rem;line-height:1.2;
+}
+.ssub{color:var(--mu);font-size:1rem;max-width:580px;line-height:1.75;margin-bottom:3rem}
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            cursor: default;
-            position: relative;
-        }
-        .logo span { color: var(--green); }
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -2px; left: 0;
-            width: 0; height: 2px;
-            background: var(--green);
-            transition: width 0.4s ease;
-        }
-        .logo:hover::after { width: 100%; }
+/* ══════════════════════════════════════════════
+   HOW IT WORKS
+══════════════════════════════════════════════ */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;position:relative}
+.steps::before{
+  content:'';position:absolute;top:32px;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--g) 30%,var(--g) 70%,transparent);
+  opacity:.14;pointer-events:none;
+}
+.step{
+  background:var(--bg2);border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--r);padding:2rem 1.4rem;text-align:center;
+  transition:all .3s ease;
+}
+.step:hover{border-color:var(--bd);transform:translateY(-5px);
+  box-shadow:0 12px 28px rgba(0,255,136,.08)}
+.snum{
+  width:46px;height:46px;background:var(--g);color:var(--bg);
+  font-weight:800;font-size:1.1rem;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.1rem;
+  transition:transform .3s cubic-bezier(.2,.9,.4,1.4);
+}
+.step:hover .snum{transform:scale(1.12) rotate(6deg)}
+.step h4{font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.step p{font-size:.88rem;color:var(--mu);line-height:1.6}
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-            position: relative;
-        }
-        .nav-links a:not(.btn-outline)::after {
-            content: '';
-            position: absolute;
-            bottom: -4px; left: 0;
-            width: 0; height: 2px;
-            background: var(--green);
-            transition: width 0.3s ease;
-        }
-        .nav-links a:not(.btn-outline):hover::after { width: 100%; }
-        .nav-links a:hover { color: var(--green); }
+/* ══════════════════════════════════════════════
+   ROI CARDS
+══════════════════════════════════════════════ */
+.roi{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.roic{
+  background:var(--bg2);border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--r);padding:2rem 1.6rem;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.roic::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.roic:hover::before{transform:scaleX(1)}
+.roic:hover{border-color:var(--bd);transform:translateY(-5px);
+  box-shadow:0 12px 28px rgba(0,255,136,.09)}
+.riico{font-size:2rem;color:var(--g);margin-bottom:1.1rem;display:block;
+  transition:transform .35s cubic-bezier(.2,.9,.4,1.5)}
+.roic:hover .riico{transform:scale(1.2) translateY(-3px)}
+.roic h4{font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.roic p{font-size:.9rem;color:var(--mu);line-height:1.65}
+.rtag{margin-top:1rem;display:inline-block;
+  background:var(--g10);border:1px solid var(--bd);
+  color:var(--g);font-size:.7rem;font-weight:700;
+  padding:.25rem .7rem;border-radius:40px}
 
-        .btn-outline {
-            background: transparent;
-            border: 1.5px solid var(--green);
-            color: var(--green);
-            padding: 0.5rem 1.2rem;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-        .btn-outline:hover {
-            background: var(--green);
-            color: var(--bg);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px var(--green-glow);
-        }
+/* ══════════════════════════════════════════════
+   PRICING
+══════════════════════════════════════════════ */
+.pricing-tabs{
+  display:flex;gap:.5rem;background:var(--bg2);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:40px;padding:.35rem;
+  width:fit-content;margin:0 auto 2.5rem;
+}
+.ptab{
+  padding:.5rem 1.4rem;border-radius:40px;font-size:.88rem;
+  font-weight:600;cursor:pointer;border:none;
+  background:transparent;color:var(--mu);
+  transition:all .25s;font-family:'Inter',sans-serif;
+}
+.ptab.active{background:var(--g);color:var(--bg)}
+.ptab:not(.active):hover{color:var(--tx)}
 
-        /* ── HAMBURGER ── */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 6px;
-            z-index: 200;
-            background: none;
-            border: none;
-        }
-        .hamburger span {
-            display: block;
-            width: 24px; height: 2px;
-            background: var(--text);
-            border-radius: 2px;
-            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
-        }
-        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--green); }
-        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--green); }
+.pricing-panel{display:none}
+.pricing-panel.show{display:grid}
 
-        /* mobile drawer */
-        .mobile-menu {
-            display: none;
-            flex-direction: column;
-            gap: 0;
-            background: rgba(10,10,10,0.98);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-top: 1px solid var(--border);
-            padding: 0;
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.3s;
-        }
-        .mobile-menu.open {
-            max-height: 400px;
-            padding: 1rem 0 1.5rem;
-        }
-        .mobile-menu a {
-            color: var(--text);
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 500;
-            padding: 0.8rem 1.5rem;
-            transition: all 0.2s;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            display: block;
-        }
-        .mobile-menu a:hover { color: var(--green); background: rgba(0,255,136,0.04); padding-left: 2rem; }
-        .mobile-menu .btn-outline-mobile {
-            margin: 1rem 1.5rem 0;
-            text-align: center;
-            display: block;
-            border: 1.5px solid var(--green);
-            color: var(--green);
-            padding: 0.75rem 1rem;
-            border-radius: 40px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .mobile-menu .btn-outline-mobile:hover {
-            background: var(--green); color: var(--bg);
-        }
+/* setup */
+.setup-grid{grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.pcard{
+  background:var(--bg2);border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:2rem 1.6rem;
+  position:relative;overflow:hidden;
+  transition:all .35s cubic-bezier(.2,.9,.4,1.1);
+}
+.pcard.hot{
+  border-color:var(--g);
+  background:linear-gradient(160deg,var(--bg2) 70%,rgba(0,255,136,.05));
+}
+.pcard.hot::after{
+  content:'Mais popular';position:absolute;
+  top:1.2rem;right:0;
+  background:var(--g);color:var(--bg);
+  font-size:.65rem;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:.28rem 1rem .28rem .75rem;
+  clip-path:polygon(0 0,100% 0,88% 50%,100% 100%,0 100%);
+}
+.pcard:hover{transform:translateY(-7px);border-color:var(--g);
+  box-shadow:0 16px 36px rgba(0,255,136,.14)}
+.pcard-name{font-size:1.3rem;font-weight:700;margin-bottom:.3rem}
+.pcard-desc{font-size:.82rem;color:var(--mu);margin-bottom:1.2rem;line-height:1.5}
+.pcard-price{
+  font-size:2.1rem;font-weight:800;color:var(--g);
+  letter-spacing:-.03em;line-height:1;margin-bottom:1.4rem;
+}
+.pcard-price sup{font-size:1rem;font-weight:600;vertical-align:super}
+.pcard-price small{font-size:.8rem;font-weight:400;color:var(--mu)}
+.pcard-feats{list-style:none;margin-bottom:1.6rem}
+.pcard-feats li{
+  display:flex;align-items:center;gap:.5rem;
+  font-size:.88rem;padding:.35rem 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.pcard-feats li:last-child{border-bottom:none}
+.pcard-feats i{color:var(--g);font-size:.75rem;flex-shrink:0}
+.btn-plan{
+  display:block;width:100%;padding:.72rem;border-radius:30px;
+  background:var(--g);color:var(--bg);font-weight:700;font-size:.9rem;
+  text-align:center;border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;
+  position:relative;overflow:hidden;transition:all .25s;
+}
+.btn-plan::after{content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,.18);
+  transform:translateX(-110%) skewX(-15deg);transition:transform .4s}
+.btn-plan:hover::after{transform:translateX(110%) skewX(-15deg)}
+.btn-plan:hover{transform:translateY(-2px);box-shadow:0 6px 18px var(--gglow)}
+.btn-plan.ghost{background:transparent;border:1.5px solid var(--g);color:var(--g)}
+.btn-plan.ghost:hover{background:var(--g10)}
 
-        /* ── BUTTONS ── */
-        .btn-primary {
-            display: inline-block;
-            background: var(--green);
-            color: var(--bg);
-            font-weight: 700;
-            padding: 0.9rem 2rem;
-            border-radius: 40px;
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,0.15);
-            transform: translateX(-110%) skewX(-15deg);
-            transition: transform 0.5s;
-        }
-        .btn-primary:hover::after { transform: translateX(110%) skewX(-15deg); }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 28px var(--green-glow);
-        }
+/* maintenance */
+.maint-grid{grid-template-columns:repeat(3,1fr);gap:1.3rem}
 
-        .btn-secondary {
-            display: inline-block;
-            background: transparent;
-            border: 1.5px solid var(--green);
-            color: var(--green);
-            padding: 0.9rem 2rem;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.25s;
-        }
-        .btn-secondary:hover {
-            background: rgba(0,255,136,0.1);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 14px var(--green-dim);
-        }
+/* ══════════════════════════════════════════════
+   FORM
+══════════════════════════════════════════════ */
+.fshell{
+  background:var(--bg2);border:1px solid rgba(255,255,255,.08);
+  border-radius:28px;padding:2.8rem;max-width:700px;margin:0 auto;
+  transition:box-shadow .3s;
+}
+.fshell:focus-within{
+  box-shadow:0 0 0 1px rgba(0,255,136,.22),0 20px 50px rgba(0,255,136,.06)
+}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.fg{margin-bottom:1.3rem}
+.fg label{display:block;font-size:.84rem;font-weight:600;
+  margin-bottom:.4rem;color:var(--tx)}
+.fg input,.fg textarea,.fg select{
+  width:100%;padding:.82rem 1rem;
+  background:var(--bg3);border:1px solid #27272A;
+  border-radius:12px;color:var(--tx);
+  font-family:'Inter',sans-serif;font-size:.95rem;
+  transition:border .2s,box-shadow .2s,transform .15s;
+  -webkit-appearance:none;appearance:none;
+}
+.fg input:focus,.fg textarea:focus,.fg select:focus{
+  outline:none;border-color:var(--g);
+  box-shadow:0 0 0 3px rgba(0,255,136,.14);
+  transform:translateY(-1px);
+}
+.fg input::placeholder,.fg textarea::placeholder{color:#52525B}
+.fg textarea{resize:vertical;min-height:88px}
+.fg select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23A1A1AA' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center}
+.btn-sub{
+  width:100%;padding:1.05rem;border:none;border-radius:40px;
+  background:var(--g);color:var(--bg);
+  font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-sub::after{content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,.18);
+  transform:translateX(-110%) skewX(-15deg);transition:transform .45s}
+.btn-sub:hover::after{transform:translateX(110%) skewX(-15deg)}
+.btn-sub:hover{transform:translateY(-2px);box-shadow:0 8px 26px var(--gglow)}
+.btn-sub:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.fmsg{
+  margin-top:1rem;padding:.9rem 1rem;border-radius:12px;
+  font-size:.9rem;text-align:center;display:none;
+  animation:msgIn .35s ease;
+}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+.fmsg.ok {background:rgba(0,255,136,.08);color:var(--g);border:1px solid rgba(0,255,136,.28)}
+.fmsg.err{background:rgba(248,113,113,.08);color:#f87171;border:1px solid rgba(248,113,113,.28)}
 
-        /* ── HERO ── */
-        .hero {
-            padding: 5rem 0 3.5rem;
-            text-align: center;
-            position: relative;
-        }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--green-dim);
-            border: 1px solid var(--border);
-            color: var(--green);
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 0.35rem 1rem;
-            border-radius: 40px;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            animation: badgePulse 3s ease-in-out infinite;
-        }
-        @keyframes badgePulse {
-            0%,100% { box-shadow: 0 0 0 0 rgba(0,255,136,0.3); }
-            50% { box-shadow: 0 0 0 6px rgba(0,255,136,0); }
-        }
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.4rem);
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.03em;
-        }
-        .hero h1 .accent { color: var(--green); }
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+footer{
+  background:#060608;border-top:1px solid var(--bd);
+  padding:3.2rem 0 2rem;text-align:center;
+  position:relative;z-index:2;
+}
+.flogo{font-size:1.6rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.3rem}
+.flogo em{color:var(--g);font-style:normal}
+footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
+.socrow{display:flex;justify-content:center;gap:1rem;margin-bottom:1.8rem}
+.socrow a{
+  width:42px;height:42px;border-radius:50%;border:1px solid #27272A;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mu);font-size:1.1rem;text-decoration:none;
+  transition:all .25s;
+}
+.socrow a:hover{color:var(--g);border-color:var(--g);
+  transform:translateY(-3px);box-shadow:0 4px 14px rgba(0,255,136,.18)}
+.fdiv{width:40px;height:1px;background:var(--bd);margin:1.2rem auto}
+.finfo{font-size:.75rem;color:#52525B;line-height:1.9}
+.finfo a{color:#71717A;transition:color .2s;text-decoration:none}
+.finfo a:hover{color:var(--g)}
 
-        /* typing cursor */
-        .typing-cursor {
-            display: inline-block;
-            width: 3px;
-            height: 0.85em;
-            background: var(--green);
-            vertical-align: middle;
-            margin-left: 2px;
-            animation: blink 0.9s step-end infinite;
-        }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+/* ══════════════════════════════════════════════
+   WHATSAPP FLOAT
+══════════════════════════════════════════════ */
+.waf{
+  position:fixed;bottom:1.5rem;right:1.5rem;
+  width:54px;height:54px;border-radius:50%;
+  background:#25D366;z-index:99;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 22px rgba(37,211,102,.4);
+  animation:wafloat 3s ease-in-out infinite;
+  transition:transform .2s,box-shadow .2s;
+  text-decoration:none;
+}
+.waf:hover{transform:scale(1.1)!important;animation:none;
+  box-shadow:0 8px 32px rgba(37,211,102,.55)!important}
+.waf i{color:#fff;font-size:1.7rem}
+.waf::before{
+  content:'Fale conosco';position:absolute;right:62px;top:50%;
+  transform:translateY(-50%) translateX(6px);
+  background:rgba(9,9,11,.92);color:#fff;
+  font-size:.74rem;font-family:'Inter',sans-serif;
+  padding:.35rem .75rem;border-radius:8px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+}
+.waf:hover::before{opacity:1;transform:translateY(-50%) translateX(0)}
+@keyframes wafloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 
-        .hero p {
-            font-size: clamp(1rem, 2.5vw, 1.2rem);
-            color: var(--muted);
-            max-width: 700px;
-            margin: 0 auto 2.5rem;
-        }
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+/* ══════════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════════ */
+.rv{opacity:0;transform:translateY(26px);
+  transition:opacity .7s cubic-bezier(.2,.9,.4,1),transform .7s cubic-bezier(.2,.9,.4,1)}
+.rv.on{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}
+.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-        /* ── STATS BAR ── */
-        .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            flex-wrap: wrap;
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-            margin: 3rem 0 0;
-        }
-        .stat-item {
-            flex: 1;
-            min-width: 120px;
-            padding: 1.4rem 1rem;
-            text-align: center;
-            border-right: 1px solid var(--border);
-            transition: background 0.3s;
-        }
-        .stat-item:last-child { border-right: none; }
-        .stat-item:hover { background: rgba(0,255,136,0.05); }
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--green);
-            display: block;
-            line-height: 1;
-        }
-        .stat-label {
-            font-size: 0.78rem;
-            color: var(--muted);
-            margin-top: 0.3rem;
-        }
+/* scroll-to-top */
+.stt{position:fixed;bottom:1.5rem;left:1.5rem;width:40px;height:40px;
+  border-radius:50%;background:var(--bg2);border:1px solid var(--bd);
+  color:var(--g);font-size:.9rem;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;z-index:99;
+  opacity:0;pointer-events:none;transition:all .3s}
+.stt.on{opacity:1;pointer-events:auto}
+.stt:hover{background:var(--g10);transform:translateY(-3px)}
 
-        /* ── SECTIONS ── */
-        section {
-            padding: 5rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            position: relative;
-        }
-        .section-title {
-            font-size: clamp(1.6rem, 4vw, 2rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        .section-sub {
-            text-align: center;
-            color: var(--muted);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            font-size: 1rem;
-        }
-
-        /* ── SERVICES ── */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 1.5rem;
-        }
-        .service-item {
-            background: var(--bg2);
-            border-radius: 20px;
-            padding: 1.8rem;
-            border: 1px solid var(--border);
-            transition: all 0.35s cubic-bezier(0.2,0.9,0.4,1.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .service-item::before {
-            content: '';
-            position: absolute;
-            top: -60%; left: -60%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at center, rgba(0,255,136,0.06) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-        .service-item:hover::before { opacity: 1; }
-        .service-item:hover {
-            transform: translateY(-6px);
-            border-color: var(--green);
-            box-shadow: 0 12px 28px rgba(0,255,136,0.12);
-        }
-        .service-item i {
-            font-size: 2rem;
-            color: var(--green);
-            margin-bottom: 1rem;
-            display: block;
-            transition: transform 0.3s cubic-bezier(0.2,0.9,0.4,1.4);
-        }
-        .service-item:hover i { transform: scale(1.2) rotate(-5deg); }
-        .service-item h4 { font-size: 1.15rem; margin-bottom: 0.5rem; }
-        .service-item p { font-size: 0.9rem; color: var(--muted); }
-
-        /* ── PLATFORMS ── */
-        .platforms-section { background: linear-gradient(160deg, #0A0A0A 60%, #0d120e); }
-        .platforms-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2.5rem;
-        }
-        .platform-category {
-            flex: 1; min-width: 200px; max-width: 300px;
-            text-align: center;
-        }
-        .platform-category h4 {
-            font-size: 0.75rem;
-            color: var(--green);
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-        .platform-badge {
-            background: var(--bg3);
-            padding: 0.45rem 1rem;
-            margin: 0.3rem;
-            display: inline-block;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            border: 1px solid #2A2A2A;
-            transition: all 0.25s ease;
-            cursor: default;
-        }
-        .platform-badge:hover {
-            border-color: var(--green);
-            transform: translateY(-3px);
-            background: rgba(0,255,136,0.06);
-            box-shadow: 0 4px 14px rgba(0,255,136,0.1);
-        }
-
-        /* ── PLANS ── */
-        .plans-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-        }
-        .plan-card {
-            background: var(--bg2);
-            border-radius: 24px;
-            padding: 2rem;
-            border: 1px solid rgba(0,255,136,0.2);
-            transition: all 0.35s cubic-bezier(0.2,0.9,0.4,1.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .plan-card.featured {
-            border-color: var(--green);
-            background: linear-gradient(160deg, #111 70%, rgba(0,255,136,0.05));
-        }
-        .plan-card.featured::before {
-            content: 'Popular';
-            position: absolute;
-            top: 1.2rem; right: -0.8rem;
-            background: var(--green);
-            color: var(--bg);
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 0.25rem 1.4rem 0.25rem 0.8rem;
-            clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-        .plan-card:hover {
-            transform: translateY(-7px);
-            border-color: var(--green);
-            box-shadow: 0 14px 32px rgba(0,255,136,0.15);
-        }
-        .plan-card h3 { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .plan-price {
-            font-size: 2rem; font-weight: 700;
-            color: var(--green); margin: 1rem 0;
-            line-height: 1;
-        }
-        .plan-price small { font-size: 0.85rem; font-weight: 400; color: var(--muted); }
-        .plan-features { list-style: none; margin: 1rem 0 1.5rem; }
-        .plan-features li {
-            margin: 0.5rem 0; font-size: 0.9rem;
-            display: flex; align-items: center; gap: 0.5rem;
-        }
-        .plan-features i {
-            color: var(--green); font-size: 0.8rem;
-            transition: transform 0.2s;
-        }
-        .plan-card:hover .plan-features i { transform: translateX(3px); }
-
-        .btn-small {
-            display: inline-block;
-            background: var(--green);
-            color: var(--bg);
-            font-weight: 600;
-            padding: 0.7rem 1rem;
-            border-radius: 30px;
-            text-decoration: none;
-            width: 100%;
-            text-align: center;
-            transition: all 0.25s;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-small::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,0.18);
-            transform: translateX(-110%) skewX(-15deg);
-            transition: transform 0.4s;
-        }
-        .btn-small:hover::after { transform: translateX(110%) skewX(-15deg); }
-        .btn-small:hover {
-            background: #00e07a;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px var(--green-glow);
-        }
-
-        /* ── STEPS ── */
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            position: relative;
-        }
-        .steps::before {
-            content: '';
-            position: absolute;
-            top: 36px; left: 0; right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--green), transparent);
-            opacity: 0.25;
-        }
-        .step {
-            text-align: center;
-            background: var(--bg2);
-            border-radius: 24px;
-            padding: 2rem 1.2rem;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        .step:hover {
-            transform: translateY(-5px);
-            border-color: var(--green);
-            box-shadow: 0 10px 24px rgba(0,255,136,0.1);
-        }
-        .step-number {
-            width: 50px; height: 50px;
-            background: var(--green);
-            color: var(--bg);
-            font-weight: 700; font-size: 1.2rem;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            transition: transform 0.3s cubic-bezier(0.2,0.9,0.4,1.4);
-            position: relative; z-index: 1;
-        }
-        .step:hover .step-number { transform: scale(1.12) rotate(5deg); }
-        .step h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
-        .step p { font-size: 0.88rem; color: var(--muted); }
-
-        /* ── BENEFITS ── */
-        .benefits {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem;
-        }
-        .benefit {
-            text-align: center;
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem 1.5rem;
-            transition: all 0.3s ease;
-        }
-        .benefit:hover {
-            transform: translateY(-5px);
-            border-color: var(--green);
-            box-shadow: 0 10px 24px rgba(0,255,136,0.1);
-        }
-        .benefit i {
-            font-size: 2.2rem; color: var(--green);
-            margin-bottom: 1rem; display: block;
-            transition: transform 0.35s cubic-bezier(0.2,0.9,0.4,1.5);
-        }
-        .benefit:hover i { transform: scale(1.2) translateY(-4px); }
-        .benefit h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
-        .benefit p { font-size: 0.9rem; color: var(--muted); }
-
-        /* ── FORM ── */
-        .form-container {
-            background: var(--bg2);
-            border-radius: 24px;
-            padding: 2.5rem;
-            max-width: 680px;
-            margin: 0 auto;
-            border: 1px solid rgba(0,255,136,0.2);
-            transition: box-shadow 0.3s;
-        }
-        .form-container:focus-within {
-            box-shadow: 0 0 0 1px rgba(0,255,136,0.3), 0 16px 40px rgba(0,255,136,0.07);
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.2rem;
-        }
-        .form-group { margin-bottom: 1.4rem; }
-        .form-group label {
-            display: block; margin-bottom: 0.4rem;
-            font-weight: 500; color: var(--text);
-            font-size: 0.9rem;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            background: var(--bg3);
-            border: 1px solid #2A2A2A;
-            border-radius: 12px;
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            transition: border 0.2s, box-shadow 0.2s, transform 0.2s;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--green);
-            box-shadow: 0 0 0 3px rgba(0,255,136,0.15);
-            transform: translateY(-1px);
-        }
-        .form-group textarea { resize: vertical; min-height: 90px; }
-        .btn-submit {
-            background: var(--green); color: var(--bg);
-            font-weight: 700;
-            padding: 1rem 2rem;
-            border: none; border-radius: 40px;
-            cursor: pointer; width: 100%;
-            font-size: 1rem;
-            transition: all 0.25s;
-            position: relative; overflow: hidden;
-            font-family: 'Inter', sans-serif;
-        }
-        .btn-submit::after {
-            content: '';
-            position: absolute; inset: 0;
-            background: rgba(255,255,255,0.18);
-            transform: translateX(-110%) skewX(-15deg);
-            transition: transform 0.45s;
-        }
-        .btn-submit:hover::after { transform: translateX(110%) skewX(-15deg); }
-        .btn-submit:hover {
-            background: #00e07a;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--green-glow);
-        }
-        .btn-submit:active { transform: translateY(0); }
-        .form-message {
-            margin-top: 1rem; text-align: center;
-            padding: 0.9rem; border-radius: 12px; display: none;
-            animation: msgIn 0.4s ease;
-        }
-        @keyframes msgIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:none; } }
-        .form-message.success { background: rgba(0,255,136,0.08); color: var(--green); border: 1px solid var(--green); }
-        .form-message.error { background: rgba(255,80,80,0.08); color: #ff5050; border: 1px solid #ff5050; }
-
-        /* ── FOOTER ── */
-        footer {
-            background: #050505;
-            padding: 3.5rem 0 2rem;
-            text-align: center;
-            border-top: 1px solid rgba(0,255,136,0.2);
-            position: relative; z-index: 2;
-        }
-        .footer-logo { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .footer-logo span { color: var(--green); }
-        footer > .container > p { color: var(--muted); font-size: 0.95rem; }
-        .social-links {
-            display: flex; justify-content: center; gap: 1.5rem; margin: 1.5rem 0;
-        }
-        .social-links a {
-            color: var(--muted); font-size: 1.5rem;
-            width: 46px; height: 46px;
-            border: 1px solid #2A2A2A; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.25s ease;
-        }
-        .social-links a:hover {
-            color: var(--green); border-color: var(--green);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 16px rgba(0,255,136,0.2);
-        }
-        .disclaimer { font-size: 0.75rem; color: #555; max-width: 600px; margin: 1rem auto 0; }
-        .disclaimer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
-        .disclaimer a:hover { color: var(--green); }
-
-        /* ── WHATSAPP FLOAT ── */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 1.5rem; right: 1.5rem;
-            background: #25D366;
-            width: 58px; height: 58px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 20px rgba(37,211,102,0.4);
-            z-index: 99;
-            animation: wafloat 3s ease-in-out infinite;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .whatsapp-float:hover {
-            transform: scale(1.1) !important;
-            box-shadow: 0 8px 28px rgba(37,211,102,0.55) !important;
-            animation: none;
-        }
-        .whatsapp-float a {
-            color: white; font-size: 1.9rem;
-            display: flex; align-items: center; justify-content: center;
-            width: 100%; height: 100%;
-        }
-        @keyframes wafloat {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-7px); }
-        }
-        /* tooltip */
-        .whatsapp-float::before {
-            content: 'Fale conosco';
-            position: absolute;
-            right: 70px; top: 50%;
-            transform: translateY(-50%);
-            background: rgba(10,10,10,0.92);
-            color: #fff; font-size: 0.78rem;
-            font-family: 'Inter', sans-serif;
-            padding: 0.4rem 0.8rem;
-            border-radius: 8px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s, transform 0.25s;
-            transform: translateY(-50%) translateX(8px);
-        }
-        .whatsapp-float:hover::before {
-            opacity: 1;
-            transform: translateY(-50%) translateX(0);
-        }
-
-        /* ── SCROLL ANIMATIONS ── */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(32px);
-            transition: opacity 0.75s cubic-bezier(0.2,0.9,0.4,1.1),
-                        transform 0.75s cubic-bezier(0.2,0.9,0.4,1.1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-        .fade-left {
-            opacity: 0; transform: translateX(-30px);
-            transition: opacity 0.75s ease, transform 0.75s ease;
-        }
-        .fade-left.visible { opacity: 1; transform: none; }
-        .fade-right {
-            opacity: 0; transform: translateX(30px);
-            transition: opacity 0.75s ease, transform 0.75s ease;
-        }
-        .fade-right.visible { opacity: 1; transform: none; }
-        .delay-1 { transition-delay: 0.1s; }
-        .delay-2 { transition-delay: 0.2s; }
-        .delay-3 { transition-delay: 0.3s; }
-        .delay-4 { transition-delay: 0.4s; }
-        .delay-5 { transition-delay: 0.5s; }
-
-        /* ── ANIMATED BORDER GRADIENT on section dividers ── */
-        .gradient-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--green), transparent);
-            opacity: 0.2;
-            margin: 0;
-        }
-
-        /* ── SCROLL TO TOP ── */
-        .scroll-top {
-            position: fixed;
-            bottom: 1.5rem; left: 1.5rem;
-            width: 42px; height: 42px;
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 99;
-            opacity: 0; pointer-events: none;
-            transition: all 0.3s;
-            color: var(--green); font-size: 1rem;
-        }
-        .scroll-top.visible { opacity: 1; pointer-events: auto; }
-        .scroll-top:hover {
-            background: var(--green-dim);
-            border-color: var(--green);
-            transform: translateY(-3px);
-        }
-
-        /* ── MEDIA QUERIES ── */
-        @media (max-width: 900px) {
-            .form-row { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hamburger { display: flex; }
-            .mobile-menu { display: flex; }
-
-            .hero { padding: 3.5rem 0 2.5rem; }
-            .hero h1 { font-size: clamp(1.7rem, 6vw, 2.4rem); }
-            .hero p { font-size: 1rem; }
-            .hero-buttons { flex-direction: column; align-items: center; }
-            .hero-buttons a { width: 100%; max-width: 340px; text-align: center; }
-
-            .stats-bar { border-radius: 16px; }
-            .stat-item { padding: 1rem 0.8rem; }
-            .stat-number { font-size: 1.5rem; }
-
-            section { padding: 3.5rem 0; }
-            .section-title { font-size: 1.5rem; }
-
-            .services-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
-            .service-item { padding: 1.3rem; }
-
-            .plans-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
-            .plan-card { padding: 1.5rem; }
-
-            .steps { grid-template-columns: 1fr 1fr; }
-            .steps::before { display: none; }
-
-            .benefits { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
-
-            .form-container { padding: 1.5rem; border-radius: 18px; }
-
-            /* mobile WA bar at bottom */
-            .whatsapp-float {
-                bottom: 1rem; right: 1rem;
-                width: 52px; height: 52px;
-            }
-            .whatsapp-float a { font-size: 1.6rem; }
-            .whatsapp-float::before { display: none; }
-
-            .scroll-top { display: none; }
-
-            .cursor-glow { display: none; }
-
-            footer { padding: 2.5rem 0 1.5rem; }
-            .disclaimer { font-size: 0.72rem; }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 1.65rem; }
-            .services-grid { grid-template-columns: 1fr; }
-            .steps { grid-template-columns: 1fr; }
-            .platforms-grid { gap: 1.5rem; }
-            .platform-category { min-width: 100%; }
-            .stat-item { min-width: 50%; border-right: none; border-bottom: 1px solid var(--border); }
-            .stat-item:nth-child(odd) { border-right: 1px solid var(--border); }
-            .stat-item:last-child { border-bottom: none; }
-        }
-
-        /* ── REDUCED MOTION ── */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-    </style>
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media(max-width:900px){
+  .nl{display:none}.bg2{display:flex}.mm{display:flex}
+  .setup-grid,.maint-grid{grid-template-columns:1fr}
+  .roi{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .steps::before{display:none}
+}
+@media(max-width:640px){
+  .hero{padding:3.5rem 0 3rem}
+  .hero-tagline{font-size:clamp(1.9rem,8vw,2.8rem)}
+  .hero-acts{flex-direction:column;align-items:stretch}
+  .hero-acts a,.hero-acts button{justify-content:center}
+  .steps{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+  .fshell{padding:1.6rem;border-radius:20px}
+  .pricing-tabs{flex-direction:column;border-radius:16px;width:100%}
+  .ptab{border-radius:12px}
+  .waf::before{display:none}
+  .stt{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;
+    animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
 </head>
 <body>
 
-<!-- Cursor glow -->
-<div class="cursor-glow" id="cursorGlow"></div>
-
-<!-- Particles -->
-<canvas id="particles-canvas"></canvas>
-
-<!-- Scroll to top -->
-<button class="scroll-top" id="scrollTop" aria-label="Voltar ao topo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <i class="fas fa-arrow-up"></i>
+<canvas id="fx"></canvas>
+<button class="stt" id="stt" aria-label="Topo" onclick="scrollTo({top:0,behavior:'smooth'})">
+  <i class="fas fa-arrow-up"></i>
 </button>
+<a class="waf" href="https://wa.me/5511937784725?text=Olá! Gostaria de saber mais sobre a FastNexus."
+   target="_blank" rel="noopener" aria-label="WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
 
-<!-- WhatsApp float -->
-<div class="whatsapp-float">
-    <a href="https://wa.me/5511937784725?text=Olá! Gostaria de uma análise do meu catálogo." target="_blank" rel="noopener" aria-label="WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-</div>
-
-<!-- HEADER -->
-<header id="mainHeader">
-    <div class="container">
-        <div class="navbar">
-            <div class="logo">Fast<span>Nexus</span></div>
-            <nav class="nav-links" aria-label="Menu principal">
-                <a href="#servicos">Serviços</a>
-                <a href="#planos">Planos</a>
-                <a href="#como-funciona">Como funciona</a>
-                <a href="#cadastro">Pré-cadastro</a>
-                <a href="https://wa.me/5511937784725" class="btn-outline" target="_blank" rel="noopener">Contato</a>
-            </nav>
-            <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
-    </div>
-    <!-- Mobile drawer -->
-    <nav class="mobile-menu" id="mobileMenu" aria-label="Menu mobile">
-        <a href="#servicos" class="mobile-link">Serviços</a>
-        <a href="#planos" class="mobile-link">Planos</a>
-        <a href="#como-funciona" class="mobile-link">Como funciona</a>
-        <a href="#cadastro" class="mobile-link">Pré-cadastro</a>
-        <a href="https://wa.me/5511937784725" class="btn-outline-mobile" target="_blank" rel="noopener">💬 Falar pelo WhatsApp</a>
+<!-- ────────────── HEADER ────────────── -->
+<header id="hdr">
+  <div class="wrap">
+    <nav class="nav">
+      <div class="logo">Fast<em>Nexus</em></div>
+      <div class="nl">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#planos">Planos</a>
+        <a href="#beneficios">Benefícios</a>
+        <a href="#analise" class="nc">Quero uma análise</a>
+      </div>
+      <button class="bg2" id="bg2" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
+  </div>
+  <nav class="mm" id="mm">
+    <a href="#como-funciona" class="ml">Como funciona</a>
+    <a href="#planos"        class="ml">Planos</a>
+    <a href="#beneficios"    class="ml">Benefícios</a>
+    <a href="#analise" class="mm-cta ml">Quero uma análise →</a>
+  </nav>
 </header>
 
-<main>
+<!-- ────────────── HERO ────────────── -->
+<section class="hero">
+  <div class="wrap" style="max-width:880px;text-align:center">
 
-    <!-- HERO -->
-    <section class="hero" style="border-bottom:none; padding-bottom:2rem;">
-        <div class="container">
-            <div class="hero-badge fade-up">
-                <i class="fas fa-bolt"></i>
-                Gestão 100% feita por especialistas
-            </div>
-            <h1 class="fade-up delay-1">
-                Nós operamos seus catálogos digitais<br>
-                enquanto você <span class="accent" id="typingTarget"></span><span class="typing-cursor"></span>
-            </h1>
-            <p class="fade-up delay-2">
-                Especialistas em Mercado Livre, Shopee, iFood, Goomer, HotMart e muito mais. Cadastro, organização e manutenção de produtos para você focar no que realmente importa.
-            </p>
-            <div class="hero-buttons fade-up delay-3">
-                <a href="#cadastro" class="btn-primary">Quero uma análise do meu catálogo</a>
-                <a href="#servicos" class="btn-secondary">Conheça os serviços</a>
-            </div>
+    <div class="hero-badge"><i class="fas fa-bolt"></i> Gestão 100% feita para você</div>
 
-            <!-- Stats bar -->
-            <div class="stats-bar fade-up delay-4">
-                <div class="stat-item">
-                    <span class="stat-number" data-count="24">0</span>
-                    <div class="stat-label">horas para entregar</div>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" data-count="200">0</span>
-                    <div class="stat-label">produtos por catálogo</div>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" data-count="9">0</span>
-                    <div class="stat-label">plataformas atendidas</div>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" data-suffix="%">100</span>
-                    <div class="stat-label">foco no seu crescimento</div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <p class="hero-brand">FastNexus —</p>
 
-    <!-- SERVIÇOS -->
-    <section id="servicos">
-        <div class="container">
-            <h2 class="section-title fade-up">O que fazemos por você</h2>
-            <p class="section-sub fade-up delay-1">Cuidamos de cada detalhe do seu catálogo para que seus produtos sejam encontrados e convertam mais.</p>
-            <div class="services-grid">
-                <div class="service-item fade-up">
-                    <i class="fas fa-cart-shopping"></i>
-                    <h4>Cadastro de produtos</h4>
-                    <p>Inserimos seus produtos nas plataformas com todas as informações técnicas e comerciais.</p>
-                </div>
-                <div class="service-item fade-up delay-1">
-                    <i class="fas fa-pen-fancy"></i>
-                    <h4>Descrições persuasivas</h4>
-                    <p>Criamos textos que vendem — títulos, características, benefícios.</p>
-                </div>
-                <div class="service-item fade-up delay-2">
-                    <i class="fas fa-layer-group"></i>
-                    <h4>Organização de catálogo</h4>
-                    <p>Categorias, variações, atributos — tudo padronizado.</p>
-                </div>
-                <div class="service-item fade-up delay-3">
-                    <i class="fas fa-sync-alt"></i>
-                    <h4>Atualizações contínuas</h4>
-                    <p>Preços, estoque, novos produtos — a gente cuida.</p>
-                </div>
-                <div class="service-item fade-up delay-4">
-                    <i class="fas fa-chart-line"></i>
-                    <h4>Otimização para conversão</h4>
-                    <p>Analisamos e ajustamos o que impede o cliente de comprar.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <h1 class="hero-tagline">
+      <span class="rslot">
+        <span class="rphrase" id="rphrase">Menos tempo operando,<br>mais tempo vendendo.</span>
+      </span>
+    </h1>
 
-    <!-- PLATAFORMAS -->
-    <section class="platforms-section">
-        <div class="container">
-            <h2 class="section-title fade-up">Plataformas que operamos</h2>
-            <p class="section-sub fade-up delay-1">De marketplaces a apps de delivery — cobrimos onde seus clientes estão.</p>
-            <div class="platforms-grid">
-                <div class="platform-category fade-up">
-                    <h4>Alimentação</h4>
-                    <div>
-                        <span class="platform-badge">iFood</span>
-                        <span class="platform-badge">Goomer</span>
-                        <span class="platform-badge">Anota AI</span>
-                    </div>
-                </div>
-                <div class="platform-category fade-up delay-1">
-                    <h4>Marketplaces</h4>
-                    <div>
-                        <span class="platform-badge">Mercado Livre</span>
-                        <span class="platform-badge">Shopee</span>
-                        <span class="platform-badge">Amazon</span>
-                        <span class="platform-badge">Magazine Luiza</span>
-                        <span class="platform-badge">HotMart</span>
-                    </div>
-                </div>
-                <div class="platform-category fade-up delay-2">
-                    <h4>Outros</h4>
-                    <div>
-                        <span class="platform-badge">Elo7</span>
-                        <span class="platform-badge">Enjoei</span>
-                        <span class="platform-badge">OLX</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <p class="hero-sub">
+      Cuidamos dos seus catálogos digitais do início ao fim — cadastro, organização, otimização e atualização — para que você foque em crescer e vender mais.
+    </p>
 
-    <!-- PLANOS SETUP ÚNICO -->
-    <section id="planos">
-        <div class="container">
-            <h2 class="section-title fade-up">Setup único · pagamento único</h2>
-            <p class="section-sub fade-up delay-1">Contrate uma vez, receba seu catálogo pronto em até 24h úteis*.</p>
-            <div class="plans-grid">
-                <div class="plan-card fade-up">
-                    <h3>Start</h3>
-                    <div class="plan-price">R$150 <small>à vista</small></div>
-                    <ul class="plan-features">
-                        <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
-                        <li><i class="fas fa-check-circle"></i> Até 100 produtos</li>
-                        <li><i class="fas fa-check-circle"></i> Entrega até 24h*</li>
-                    </ul>
-                    <a href="https://wa.me/5511937784725?text=Olá! Quero o plano Start (R$150, 1 plataforma até 100 produtos)" class="btn-small" target="_blank">Contratar</a>
-                </div>
-                <div class="plan-card fade-up delay-1">
-                    <h3>Growth</h3>
-                    <div class="plan-price">R$249 <small>à vista</small></div>
-                    <ul class="plan-features">
-                        <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
-                        <li><i class="fas fa-check-circle"></i> Até 250 produtos</li>
-                        <li><i class="fas fa-check-circle"></i> Entrega até 24h*</li>
-                    </ul>
-                    <a href="https://wa.me/5511937784725?text=Olá! Quero o plano Growth (R$249, 1 plataforma até 200 produtos)" class="btn-small" target="_blank">Contratar</a>
-                </div>
-                <div class="plan-card featured fade-up delay-2">
-                    <h3>Scale</h3>
-                    <div class="plan-price">R$399 <small>à vista</small></div>
-                    <ul class="plan-features">
-                        <li><i class="fas fa-check-circle"></i> Catálogo avançado</li>
-                        <li><i class="fas fa-check-circle"></i> Multiplas plataformas</li>
-                        <li><i class="fas fa-check-circle"></i> Entrega até 24h*</li>
-                    </ul>
-                    <a href="https://wa.me/5511937784725?text=Olá! Quero o plano Scale (R$399, 2 plataformas até 200 produtos)" class="btn-small" target="_blank">Contratar</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- MANUTENÇÃO MENSAL -->
-    <section>
-        <div class="container">
-            <h2 class="section-title fade-up">Manutenção mensal · sem preocupações</h2>
-            <p class="section-sub fade-up delay-1">Assine e esqueça — cuidamos das atualizações para você.</p>
-            <div class="plans-grid">
-                <div class="plan-card fade-up">
-                    <h3>Lite</h3>
-                    <div class="plan-price">R$79 <small>/mês</small></div>
-                    <ul class="plan-features">
-                        <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
-                        <li><i class="fas fa-check-circle"></i> Alterações Simples</li>
-                    </ul>
-                    <a href="https://wa.me/5511937784725?text=Olá! Quero o plano de manutenção Lite (R$79/mês)" class="btn-small" target="_blank">Assinar</a>
-                </div>
-                <div class="plan-card featured fade-up delay-1">
-                    <h3>Pro</h3>
-                    <div class="plan-price">R$149 <small>/mês</small></div>
-                    <ul class="plan-features">
-                        <li><i class="fas fa-check-circle"></i> 2 plataformas</li>
-                        <li><i class="fas fa-check-circle"></i> Alta frequência</li>
-                    </ul>
-                    <a href="https://wa.me/5511937784725?text=Olá! Quero o plano de manutenção Pro (R$80/mês)" class="btn-small" target="_blank">Assinar</a>
-                </div>
-                <div class="plan-card fade-up delay-2">
-                    <h3>Full</h3>
-                    <div class="plan-price">R$299 <small>/mês</small></div>
-                    <ul class="plan-features">
-                        <li><i class="fas fa-check-circle"></i> 3+ plataformas</li>
-                        <li><i class="fas fa-check-circle"></i> Alterações contínuas + Prioridade</li>
-                    </ul>
-                    <a href="https://wa.me/5511937784725?text=Olá! Quero o plano de manutenção Full (R$299/mês)" class="btn-small" target="_blank">Assinar</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- COMO FUNCIONA -->
-    <section id="como-funciona">
-        <div class="container">
-            <h2 class="section-title fade-up">Como funciona</h2>
-            <p class="section-sub fade-up delay-1">Simples, rápido e sem complicação.</p>
-            <div class="steps">
-                <div class="step fade-up">
-                    <div class="step-number">1</div>
-                    <h4>Você entra em contato</h4>
-                    <p>Envia seu catálogo atual (foto, PDF) e escolhe as plataformas.</p>
-                </div>
-                <div class="step fade-up delay-1">
-                    <div class="step-number">2</div>
-                    <h4>Nós operamos</h4>
-                    <p>Cadastramos, organizamos e otimizamos tudo.</p>
-                </div>
-                <div class="step fade-up delay-2">
-                    <div class="step-number">3</div>
-                    <h4>Entrega rápida*</h4>
-                    <p>Seu catálogo pronto em até 24h úteis.</p>
-                </div>
-                <div class="step fade-up delay-3">
-                    <div class="step-number">4</div>
-                    <h4>Manutenção opcional</h4>
-                    <p>Assina o plano mensal e nunca mais se preocupa com atualizações.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- BENEFÍCIOS -->
-    <section>
-        <div class="container">
-            <h2 class="section-title fade-up">Benefícios diretos</h2>
-            <p class="section-sub fade-up delay-1">O que você ganha ao escolher a FastNexus.</p>
-            <div class="benefits">
-                <div class="benefit fade-up">
-                    <i class="fas fa-user-clock"></i>
-                    <h4>Tempo livre para focar no seu negócio</h4>
-                    <p>Pare de brigar com sistemas e foque no que realmente importa.</p>
-                </div>
-                <div class="benefit fade-up delay-1">
-                    <i class="fas fa-chart-simple"></i>
-                    <h4>Mais vendas com catálogos otimizados</h4>
-                    <p>Produtos bem apresentados = mais pedidos e ticket médio maior.</p>
-                </div>
-                <div class="benefit fade-up delay-2">
-                    <i class="fas fa-smile"></i>
-                    <h4>Cliente satisfeito com informações corretas</h4>
-                    <p>Informações precisas geram confiança e fidelização.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PRÉ-CADASTRO -->
-    <section id="cadastro">
-        <div class="container">
-            <h2 class="section-title fade-up">Pré-cadastre-se</h2>
-            <p class="section-sub fade-up delay-1">Preencha o formulário e entraremos em contato para analisar seu catálogo.</p>
-            <div class="form-container fade-up delay-2">
-                <form id="preCadastroForm" novalidate>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nome">Nome completo *</label>
-                            <input type="text" id="nome" name="nome" required autocomplete="name" placeholder="Seu nome">
-                        </div>
-                        <div class="form-group">
-                            <label for="negocio">Nome do negócio *</label>
-                            <input type="text" id="negocio" name="negocio" required placeholder="Sua empresa">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">E-mail *</label>
-                        <input type="email" id="email" name="email" required autocomplete="email" placeholder="seu@email.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="plataformas">Plataforma(s) que utiliza</label>
-                        <input type="text" id="plataformas" name="plataformas" placeholder="Ex: Mercado Livre, Shopee, iFood...">
-                    </div>
-                    <div class="form-group">
-                        <label for="mensagem">Mensagem (opcional)</label>
-                        <textarea id="mensagem" name="mensagem" rows="3" placeholder="Conte um pouco mais sobre seu catálogo..."></textarea>
-                    </div>
-                    <button type="submit" class="btn-submit">Enviar pré-cadastro</button>
-                    <div id="formMessage" class="form-message" role="alert"></div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-</main>
-
-<footer>
-    <div class="container">
-        <div class="footer-logo">Fast<span>Nexus</span></div>
-        <p>Gestão de catálogos digitais para qualquer negócio</p>
-        <div class="social-links">
-            <a href="https://instagram.com/fastnexusbr" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://facebook.com/fastnexus" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="https://wa.me/5511937784725" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        </div>
-        <div class="disclaimer">
-            *Prazo médio de entrega: até 24 horas úteis. Catálogos com mais de 200 produtos podem ter prazo diferenciado – consultar antes do início.
-        </div>
-        <div class="disclaimer" style="margin-top:0.8rem;">
-            📧 <a href="mailto:contato@fastnexus.com.br">contato@fastnexus.com.br</a>
-        </div>
-        <div class="disclaimer" style="margin-top:0.8rem;">
-            © 2025 FastNexus · Todos os direitos reservados.
-        </div>
+    <div class="hero-acts">
+      <a href="#analise" class="btn-p"><i class="fas fa-arrow-right"></i> Quero uma análise do meu catálogo</a>
+      <a href="#como-funciona" class="btn-o">Ver como funciona</a>
     </div>
+
+  </div>
+</section>
+
+<!-- ────────────── TICKER ────────────── -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track" id="ticker">
+    <!-- duplicated for seamless loop; JS injects -->
+  </div>
+</div>
+
+<!-- ────────────── COMO FUNCIONA ────────────── -->
+<section class="sec" id="como-funciona">
+  <div class="wrap">
+    <div class="sbadge rv"><i class="fas fa-map-signs"></i> Simples e rápido</div>
+    <h2 class="stitle rv d1">Como funciona</h2>
+    <p class="ssub rv d2">Do primeiro contato ao catálogo publicado — sem você precisar mexer em nada.</p>
+
+    <div class="steps">
+      <div class="step rv">
+        <div class="snum">1</div>
+        <h4>Você entra em contato</h4>
+        <p>Nos envia o catálogo atual (foto, PDF ou lista) e escolhe as plataformas desejadas.</p>
+      </div>
+      <div class="step rv d1">
+        <div class="snum">2</div>
+        <h4>Nós operamos tudo</h4>
+        <p>Cadastramos, organizamos, criamos descrições e otimizamos cada produto para converter.</p>
+      </div>
+      <div class="step rv d2">
+        <div class="snum">3</div>
+        <h4>Entrega em até 24h</h4>
+        <p>Seu catálogo digital pronto, publicado e funcionando em até 24 horas úteis.*</p>
+      </div>
+      <div class="step rv d3">
+        <div class="snum">4</div>
+        <h4>Manutenção opcional</h4>
+        <p>Com um plano recorrente, atualizamos preços, estoque e novos produtos quando precisar.</p>
+      </div>
+    </div>
+    <p style="margin-top:1.5rem;font-size:.76rem;color:#52525B;text-align:center">
+      *Prazo médio de 24h úteis. Catálogos com mais de 250 produtos podem ter prazo diferenciado — consultar antes do início.
+    </p>
+  </div>
+</section>
+
+<!-- ────────────── PLANOS ────────────── -->
+<section class="sec" id="planos">
+  <div class="wrap">
+    <div class="sbadge rv"><i class="fas fa-layer-group"></i> Transparência total</div>
+    <h2 class="stitle rv d1">Escolha seu plano</h2>
+    <p class="ssub rv d2">Setup único sem mensalidade ou manutenção recorrente para quem quer atualização contínua. Você escolhe o que faz mais sentido para o seu negócio.</p>
+
+    <!-- tabs -->
+    <div class="pricing-tabs rv d2">
+      <button class="ptab active" data-tab="setup">Setup único</button>
+      <button class="ptab"        data-tab="manut">Manutenção mensal</button>
+    </div>
+
+    <!-- SETUP ÚNICO -->
+    <div class="pricing-panel setup-grid show" id="tab-setup">
+
+      <div class="pcard rv">
+        <div class="pcard-name">Start</div>
+        <div class="pcard-desc">Ideal para quem está começando em uma única plataforma.</div>
+        <div class="pcard-price"><sup>R$</sup>150 <small>pagamento único</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Até 100 produtos</li>
+          <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
+          <li><i class="fas fa-check-circle"></i> Entrega em até 24h*</li>
+          <li><i class="fas fa-check-circle"></i> Cadastro + organização</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse no plano Start (R$150)." target="_blank" class="btn-plan ghost">Contratar via WhatsApp</a>
+      </div>
+
+      <div class="pcard hot rv d1">
+        <div class="pcard-name">Growth</div>
+        <div class="pcard-desc">Para negócios em expansão com catálogo médio.</div>
+        <div class="pcard-price"><sup>R$</sup>249 <small>pagamento único</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Até 250 produtos</li>
+          <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
+          <li><i class="fas fa-check-circle"></i> Entrega em até 24h*</li>
+          <li><i class="fas fa-check-circle"></i> Descrições otimizadas</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse no plano Growth (R$249)." target="_blank" class="btn-plan">Contratar via WhatsApp</a>
+      </div>
+
+      <div class="pcard rv d2">
+        <div class="pcard-name">Scale</div>
+        <div class="pcard-desc">Catálogo avançado em múltiplas plataformas simultaneamente.</div>
+        <div class="pcard-price"><sup>R$</sup>399 <small>pagamento único</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Catálogo avançado</li>
+          <li><i class="fas fa-check-circle"></i> Múltiplas plataformas</li>
+          <li><i class="fas fa-check-circle"></i> Entrega em até 24h*</li>
+          <li><i class="fas fa-check-circle"></i> Otimização para conversão</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse no plano Scale (R$399)." target="_blank" class="btn-plan ghost">Contratar via WhatsApp</a>
+      </div>
+
+    </div>
+
+    <!-- MANUTENÇÃO -->
+    <div class="pricing-panel maint-grid" id="tab-manut">
+
+      <div class="pcard rv">
+        <div class="pcard-name">Operação Lite</div>
+        <div class="pcard-desc">Atualizações simples e pontuais no catálogo.</div>
+        <div class="pcard-price"><sup>R$</sup>79 <small>/mês</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Atualizações simples</li>
+          <li><i class="fas fa-check-circle"></i> Até 10 alterações/mês</li>
+          <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
+          <li><i class="fas fa-check-circle"></i> Suporte por WhatsApp</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse na Operação Lite (R$79/mês)." target="_blank" class="btn-plan ghost">Assinar via WhatsApp</a>
+      </div>
+
+      <div class="pcard hot rv d1">
+        <div class="pcard-name">Operação Pro</div>
+        <div class="pcard-desc">Alta frequência de alterações e múltiplos produtos.</div>
+        <div class="pcard-price"><sup>R$</sup>149 <small>/mês</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Alta frequência</li>
+          <li><i class="fas fa-check-circle"></i> Até 30 alterações/mês</li>
+          <li><i class="fas fa-check-circle"></i> 2 plataformas</li>
+          <li><i class="fas fa-check-circle"></i> Atendimento prioritário</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse na Operação Pro (R$149/mês)." target="_blank" class="btn-plan">Assinar via WhatsApp</a>
+      </div>
+
+      <div class="pcard rv d2">
+        <div class="pcard-name">Operação Full</div>
+        <div class="pcard-desc">Operação contínua com prioridade máxima.</div>
+        <div class="pcard-price"><sup>R$</sup>299 <small>/mês</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Operação contínua</li>
+          <li><i class="fas fa-check-circle"></i> Alterações ilimitadas</li>
+          <li><i class="fas fa-check-circle"></i> Múltiplas plataformas</li>
+          <li><i class="fas fa-check-circle"></i> Prioridade máxima</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse na Operação Full (R$299/mês)." target="_blank" class="btn-plan ghost">Assinar via WhatsApp</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ────────────── BENEFÍCIOS / ROI ────────────── -->
+<section class="sec" id="beneficios">
+  <div class="wrap">
+    <div class="sbadge rv"><i class="fas fa-chart-line"></i> Por que vale a pena</div>
+    <h2 class="stitle rv d1">Um catálogo bem-feito<br>vira investimento</h2>
+    <p class="ssub rv d2">Cada detalhe influencia a decisão de compra. Com o catálogo certo, seu produto aparece, convence e vende — e o custo da FastNexus se paga na primeira semana.</p>
+
+    <div class="roi">
+      <div class="roic rv">
+        <i class="riico fas fa-clock"></i>
+        <h4>Recupere seu tempo</h4>
+        <p>Cada hora no back-office é uma hora a menos no que realmente faz seu negócio crescer. Delegue a operação e foque no estratégico.</p>
+        <span class="rtag">↑ Mais foco no negócio</span>
+      </div>
+      <div class="roic rv d1">
+        <i class="riico fas fa-fire"></i>
+        <h4>Produtos que convencem</h4>
+        <p>Títulos otimizados, fotos bem posicionadas e descrições que respondem às dúvidas do cliente antes mesmo de ele perguntar.</p>
+        <span class="rtag">↑ Mais conversão</span>
+      </div>
+      <div class="roic rv d2">
+        <i class="riico fas fa-coins"></i>
+        <h4>Custo que vira retorno</h4>
+        <p>Uma venda a mais por dia já cobre o investimento. O que vier além é lucro direto — e um catálogo organizado vende todos os dias.</p>
+        <span class="rtag">↑ ROI positivo rápido</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────── ANÁLISE / FORM ────────────── -->
+<section class="sec" id="analise">
+  <div class="wrap">
+    <div class="sbadge rv"><i class="fas fa-search"></i> Sem compromisso</div>
+    <h2 class="stitle rv d1">Quero uma análise<br>do meu catálogo</h2>
+    <p class="ssub rv d2">Preencha o formulário e nossa equipe entra em contato para analisar seu catálogo gratuitamente e indicar o melhor plano para você.</p>
+
+    <div class="fshell rv d2">
+      <form id="fn-form" novalidate>
+
+        <div class="frow">
+          <div class="fg">
+            <label for="f-nome">Nome completo *</label>
+            <input type="text" id="f-nome" name="nome" required autocomplete="name" placeholder="Seu nome">
+          </div>
+          <div class="fg">
+            <label for="f-neg">Nome do negócio *</label>
+            <input type="text" id="f-neg" name="negocio" required placeholder="Sua empresa ou loja">
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="fg">
+            <label for="f-email">E-mail *</label>
+            <input type="email" id="f-email" name="email" required autocomplete="email" placeholder="seu@email.com">
+          </div>
+          <div class="fg">
+            <label for="f-fone">WhatsApp</label>
+            <input type="tel" id="f-fone" name="whatsapp" autocomplete="tel" placeholder="(11) 9 0000-0000">
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="fg">
+            <label for="f-plat">Plataformas que utiliza</label>
+            <input type="text" id="f-plat" name="plataformas" placeholder="Ex: Mercado Livre, Shopee…">
+          </div>
+          <div class="fg">
+            <label for="f-plano">Plano de interesse</label>
+            <select id="f-plano" name="plano">
+              <option value="">Não sei ainda</option>
+              <optgroup label="Setup único">
+                <option>Start — R$150</option>
+                <option>Growth — R$249</option>
+                <option>Scale — R$399</option>
+              </optgroup>
+              <optgroup label="Manutenção mensal">
+                <option>Operação Lite — R$79/mês</option>
+                <option>Operação Pro — R$149/mês</option>
+                <option>Operação Full — R$299/mês</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label for="f-msg">Conta um pouco sobre seu catálogo (opcional)</label>
+          <textarea id="f-msg" name="mensagem" placeholder="Quantos produtos tem? Quais plataformas usa hoje? Qual o maior desafio?"></textarea>
+        </div>
+
+        <button type="submit" class="btn-sub" id="btn-sub">
+          Solicitar análise gratuita
+        </button>
+        <div class="fmsg" id="fmsg" role="alert"></div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────── FOOTER ────────────── -->
+<footer>
+  <div class="wrap">
+    <div class="flogo">Fast<em>Nexus</em></div>
+    <p class="ftag">Menos tempo operando, mais tempo vendendo.</p>
+    <div class="socrow">
+      <a href="https://instagram.com/fastnexusbr" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://facebook.com/fastnexus"    target="_blank" rel="noopener" aria-label="Facebook" ><i class="fab fa-facebook-f"></i></a>
+      <a href="https://wa.me/5511937784725"        target="_blank" rel="noopener" aria-label="WhatsApp" ><i class="fab fa-whatsapp"></i></a>
+    </div>
+    <div class="fdiv"></div>
+    <div class="finfo">
+      <p>📧 <a href="mailto:contato@fastnexus.com.br">contato@fastnexus.com.br</a>
+         &nbsp;·&nbsp;
+         📱 <a href="https://wa.me/5511937784725">(11) 9 3778-4725</a></p>
+      <p>📍 Uberaba – MG &nbsp;·&nbsp; CNPJ em processo de formalização</p>
+      <p style="margin-top:.5rem">© 2025 FastNexus · Todos os direitos reservados.</p>
+    </div>
+  </div>
 </footer>
 
+<!-- ════════════════════ SCRIPTS ════════════════════ -->
 <script>
-/* ────────────────────────────────────────────
-   PARTICLES BACKGROUND
-──────────────────────────────────────────── */
-(function() {
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let W, H, particles = [];
-
-    function resize() {
-        W = canvas.width = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    function Particle() {
-        this.reset();
-    }
-    Particle.prototype.reset = function() {
-        this.x = Math.random() * W;
-        this.y = Math.random() * H;
-        this.r = Math.random() * 1.5 + 0.3;
-        this.speed = Math.random() * 0.25 + 0.05;
-        this.angle = Math.random() * Math.PI * 2;
-        this.alpha = Math.random() * 0.5 + 0.1;
-        this.life = 0;
-        this.maxLife = Math.random() * 300 + 200;
-    };
-    Particle.prototype.update = function() {
-        this.x += Math.cos(this.angle) * this.speed;
-        this.y += Math.sin(this.angle) * this.speed - 0.08;
-        this.life++;
-        if (this.life > this.maxLife || this.y < -10) this.reset();
-    };
-    Particle.prototype.draw = function() {
-        const fade = this.life < 60 ? this.life/60 : this.life > this.maxLife-60 ? (this.maxLife-this.life)/60 : 1;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(0,255,136,${this.alpha * fade})`;
-        ctx.fill();
-    };
-
-    const N = window.innerWidth < 600 ? 40 : 80;
-    for (let i = 0; i < N; i++) particles.push(new Particle());
-
-    function loop() {
-        ctx.clearRect(0, 0, W, H);
-        particles.forEach(p => { p.update(); p.draw(); });
-        requestAnimationFrame(loop);
-    }
-    loop();
+/* ── PARTICLES ── */
+(function(){
+  const c=document.getElementById('fx'),x=c.getContext('2d');
+  let W,H,pts=[];
+  const resize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};
+  resize();addEventListener('resize',resize,{passive:true});
+  function P(){this.reset()}
+  P.prototype.reset=function(){
+    this.x=Math.random()*W;this.y=Math.random()*H;
+    this.r=Math.random()*1.3+.3;this.speed=Math.random()*.2+.04;
+    this.angle=Math.random()*Math.PI*2;this.alpha=Math.random()*.4+.1;
+    this.life=0;this.max=Math.random()*260+160;
+  };
+  P.prototype.tick=function(){
+    this.x+=Math.cos(this.angle)*this.speed;
+    this.y+=Math.sin(this.angle)*this.speed-.07;
+    this.life++;if(this.life>this.max||this.y<-8)this.reset();
+  };
+  P.prototype.draw=function(){
+    const f=this.life<60?this.life/60:this.life>this.max-60?(this.max-this.life)/60:1;
+    x.beginPath();x.arc(this.x,this.y,this.r,0,Math.PI*2);
+    x.fillStyle=`rgba(0,255,136,${this.alpha*f})`;x.fill();
+  };
+  const N=innerWidth<600?30:65;
+  for(let i=0;i<N;i++)pts.push(new P());
+  (function loop(){x.clearRect(0,0,W,H);pts.forEach(p=>{p.tick();p.draw();});requestAnimationFrame(loop)})();
 })();
 
-/* ────────────────────────────────────────────
-   CURSOR GLOW (desktop)
-──────────────────────────────────────────── */
-const glow = document.getElementById('cursorGlow');
-if (window.matchMedia('(pointer:fine)').matches) {
-    document.addEventListener('mousemove', e => {
-        glow.style.left = e.clientX + 'px';
-        glow.style.top = e.clientY + 'px';
+/* ── TICKER ── */
+(function(){
+  const platforms=[
+    'Mercado Livre','Shopee','iFood','Amazon',
+    'Anota AI','Elo7','Enjoei','OLX','Magazine Luiza',
+    'Hotmart','Goomer','Magalu'
+  ];
+  const track=document.getElementById('ticker');
+  // build two copies for seamless loop
+  [0,1].forEach(()=>{
+    platforms.forEach(name=>{
+      const el=document.createElement('span');
+      el.className='ticker-item';
+      el.innerHTML=`<span class="dot"></span>${name}`;
+      track.appendChild(el);
     });
-} else {
-    glow.style.display = 'none';
+  });
+})();
+
+/* ── ROTATING HERO TEXT ── */
+const phrases=[
+  'Menos tempo operando,<br>mais tempo vendendo.',
+  'Nós operamos seus catálogos<br>enquanto você cresce.',
+  'Seus produtos nas plataformas<br>em até 24 horas.',
+  'Do cadastro à otimização —<br>nós cuidamos de tudo.',
+  'Catálogo organizado,<br>cliente satisfeito, venda feita.',
+];
+let ri=0;
+const rp=document.getElementById('rphrase');
+function nextPhrase(){
+  rp.classList.remove('in');
+  rp.classList.add('out');
+  setTimeout(()=>{
+    ri=(ri+1)%phrases.length;
+    rp.innerHTML=phrases[ri];
+    rp.classList.remove('out');
+    rp.classList.add('in');
+  },320);
 }
+setInterval(nextPhrase,3500);
 
-/* ────────────────────────────────────────────
-   HEADER SCROLL EFFECT
-──────────────────────────────────────────── */
-const header = document.getElementById('mainHeader');
-window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
-    document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 300);
-}, { passive: true });
+/* ── SCROLL EFFECTS ── */
+const hdr=document.getElementById('hdr');
+const stt=document.getElementById('stt');
+addEventListener('scroll',()=>{
+  hdr.classList.toggle('sc',scrollY>50);
+  stt.classList.toggle('on',scrollY>320);
+},{passive:true});
 
-/* ────────────────────────────────────────────
-   HAMBURGER MENU
-──────────────────────────────────────────── */
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-
-hamburger.addEventListener('click', () => {
-    const open = mobileMenu.classList.toggle('open');
-    hamburger.classList.toggle('open', open);
-    hamburger.setAttribute('aria-expanded', open);
+/* ── HAMBURGER ── */
+const bg2=document.getElementById('bg2'),mm=document.getElementById('mm');
+bg2.addEventListener('click',()=>{
+  const o=mm.classList.toggle('open');
+  bg2.classList.toggle('open',o);
+  bg2.setAttribute('aria-expanded',o);
 });
+document.querySelectorAll('.ml').forEach(l=>l.addEventListener('click',()=>{
+  mm.classList.remove('open');bg2.classList.remove('open');
+  bg2.setAttribute('aria-expanded','false');
+}));
 
-document.querySelectorAll('.mobile-link').forEach(link => {
-    link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
+/* ── REVEAL ── */
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target);}});
+},{threshold:.1,rootMargin:'0px 0px -25px 0px'});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+/* ── PRICING TABS ── */
+document.querySelectorAll('.ptab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.pricing-panel').forEach(p=>{p.classList.remove('show');p.style.display='none';});
+    btn.classList.add('active');
+    const panel=document.getElementById('tab-'+btn.dataset.tab);
+    panel.classList.add('show');
+    panel.style.display='grid';
+    // re-trigger reveal for newly shown cards
+    panel.querySelectorAll('.rv:not(.on)').forEach(el=>{
+      el.classList.add('on');
     });
+  });
 });
+// init: hide manut tab
+document.getElementById('tab-manut').style.display='none';
 
-/* ────────────────────────────────────────────
-   TYPING ANIMATION
-──────────────────────────────────────────── */
-const phrases = ['cresce seu negócio.', 'foca no que importa.', 'vende mais.', 'economiza tempo.'];
-let pi = 0, ci = 0, deleting = false;
-const target = document.getElementById('typingTarget');
+/* ── FORM — Resend API ── */
+const form   = document.getElementById('fn-form');
+const fmsg   = document.getElementById('fmsg');
+const btnSub = document.getElementById('btn-sub');
 
-function typeLoop() {
-    if (!target) return;
-    const phrase = phrases[pi];
-    if (!deleting) {
-        target.textContent = phrase.slice(0, ci + 1);
-        ci++;
-        if (ci === phrase.length) { deleting = true; setTimeout(typeLoop, 1800); return; }
-        setTimeout(typeLoop, 65);
+const RESEND_KEY = 're_5RcT3uxi_3g7bR41HSYD7BxpX7NnHHxfC';
+const TO_EMAIL   = 'contato@fastnexus.com.br';
+const FROM_EMAIL = 'onboarding@resend.dev'; // troque pelo seu domínio verificado no Resend
+
+form.addEventListener('submit', async function(e){
+  e.preventDefault();
+
+  const nome     = document.getElementById('f-nome').value.trim();
+  const negocio  = document.getElementById('f-neg').value.trim();
+  const email    = document.getElementById('f-email').value.trim();
+  const fone     = document.getElementById('f-fone').value.trim();
+  const plat     = document.getElementById('f-plat').value.trim();
+  const plano    = document.getElementById('f-plano').value.trim();
+  const mensagem = document.getElementById('f-msg').value.trim();
+
+  if(!nome||!negocio||!email){
+    fmsg.textContent='⚠️ Preencha os campos obrigatórios: nome, negócio e e-mail.';
+    fmsg.className='fmsg err';fmsg.style.display='block';
+    return;
+  }
+
+  btnSub.disabled=true;
+  btnSub.textContent='Enviando…';
+
+  const html=`
+    <h2 style="color:#00FF88;font-family:sans-serif">Novo pré-cadastro — FastNexus</h2>
+    <table style="font-family:sans-serif;font-size:15px;border-collapse:collapse;width:100%">
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600;width:140px">Nome</td><td style="padding:8px 12px;border-bottom:1px solid #eee">${nome}</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600">Negócio</td><td style="padding:8px 12px;border-bottom:1px solid #eee">${negocio}</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600">E-mail</td><td style="padding:8px 12px;border-bottom:1px solid #eee">${email}</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600">WhatsApp</td><td style="padding:8px 12px;border-bottom:1px solid #eee">${fone||'—'}</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600">Plataformas</td><td style="padding:8px 12px;border-bottom:1px solid #eee">${plat||'—'}</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600">Plano</td><td style="padding:8px 12px;border-bottom:1px solid #eee">${plano||'Não informado'}</td></tr>
+      <tr><td style="padding:8px 12px;font-weight:600;vertical-align:top">Mensagem</td><td style="padding:8px 12px">${mensagem||'—'}</td></tr>
+    </table>
+  `;
+
+  try{
+    const res = await fetch('https://api.resend.com/emails',{
+      method:'POST',
+      headers:{
+        'Authorization':`Bearer ${RESEND_KEY}`,
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        from: FROM_EMAIL,
+        to:   [TO_EMAIL],
+        reply_to: email,
+        subject: `[FastNexus] Análise solicitada por ${nome} — ${negocio}`,
+        html
+      })
+    });
+
+    if(res.ok){
+      fmsg.innerHTML='✅ Solicitação enviada com sucesso! <br>Nossa equipe entrará em contato em breve.';
+      fmsg.className='fmsg ok';fmsg.style.display='block';
+      form.reset();
+      if(typeof fbq!=='undefined')fbq('track','Lead');
     } else {
-        target.textContent = phrase.slice(0, ci - 1);
-        ci--;
-        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(typeLoop, 300); return; }
-        setTimeout(typeLoop, 35);
+      const err=await res.json();
+      throw new Error(err.message||'Erro no servidor');
     }
-}
-setTimeout(typeLoop, 1200);
-
-/* ────────────────────────────────────────────
-   COUNTER ANIMATION
-──────────────────────────────────────────── */
-function animateCount(el) {
-    const target = parseInt(el.dataset.count || el.textContent);
-    const suffix = el.dataset.suffix || '+';
-    const duration = 1500;
-    const start = performance.now();
-    function frame(now) {
-        const p = Math.min((now - start) / duration, 1);
-        const ease = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(ease * target) + suffix;
-        if (p < 1) requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-}
-
-/* ────────────────────────────────────────────
-   INTERSECTION OBSERVER — scroll animations + counters
-──────────────────────────────────────────── */
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            revealObserver.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
-
-document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => revealObserver.observe(el));
-
-const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            animateCount(entry.target);
-            counterObserver.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.stat-number[data-count]').forEach(el => counterObserver.observe(el));
-
-/* ────────────────────────────────────────────
-   FORM SUBMISSION
-──────────────────────────────────────────── */
-const form = document.getElementById('preCadastroForm');
-const messageDiv = document.getElementById('formMessage');
-
-form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const nome = document.getElementById('nome').value.trim();
-    const negocio = document.getElementById('negocio').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const plataformas = document.getElementById('plataformas').value.trim();
-    const mensagem = document.getElementById('mensagem').value.trim();
-
-    if (!nome || !negocio || !email) {
-        messageDiv.textContent = '⚠️ Por favor, preencha todos os campos obrigatórios.';
-        messageDiv.className = 'form-message error';
-        messageDiv.style.display = 'block';
-        return;
-    }
-
-    const btn = form.querySelector('.btn-submit');
-    btn.textContent = 'Enviando…';
-    btn.disabled = true;
-
-    setTimeout(() => {
-        messageDiv.textContent = '✅ Pré-cadastro enviado! Entraremos em contato em breve.';
-        messageDiv.className = 'form-message success';
-        messageDiv.style.display = 'block';
-        form.reset();
-        btn.textContent = 'Enviar pré-cadastro';
-        btn.disabled = false;
-
-        // open mailto as fallback
-        const subject = encodeURIComponent(`Pré-cadastro FastNexus - ${negocio}`);
-        const body = encodeURIComponent(`Nome: ${nome}\nNegócio: ${negocio}\nE-mail: ${email}\nPlataformas: ${plataformas}\nMensagem: ${mensagem}`);
-        window.location.href = `mailto:contato@fastnexus.com.br?subject=${subject}&body=${body}`;
-    }, 600);
+  } catch(err){
+    fmsg.innerHTML=`❌ Não foi possível enviar agora. <br>Fale conosco pelo <a href="https://wa.me/5511937784725" target="_blank" style="color:#00FF88">WhatsApp</a>.`;
+    fmsg.className='fmsg err';fmsg.style.display='block';
+    console.error('[FastNexus form]',err);
+  } finally {
+    btnSub.disabled=false;
+    btnSub.textContent='Solicitar análise gratuita';
+  }
 });
 </script>
 </body>

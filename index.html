@@ -133,26 +133,30 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
   background:radial-gradient(circle,rgba(0,255,136,.07) 0%,transparent 65%);
   pointer-events:none;
 }
-.hero-badge{
-  display:inline-flex;align-items:center;gap:.5rem;
-  background:var(--g10);border:1px solid var(--bd);
-  color:var(--g);font-size:.72rem;font-weight:700;
-  padding:.3rem .9rem;border-radius:40px;letter-spacing:.08em;
-  text-transform:uppercase;margin-bottom:1.8rem;
-  animation:badgePulse 3s ease-in-out infinite;
-}
-@keyframes badgePulse{
-  0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,.3)}
-  50%{box-shadow:0 0 0 8px rgba(0,255,136,0)}
-}
-.hero-brand{
-  font-size:clamp(1rem,2vw,1.35rem);
-  font-weight:700;letter-spacing:.02em;
-  margin-bottom:.6rem;
-  /* Fast = tx, Nexus = green via .brand/.brand em */
+.hero-tagline {
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -.04em;
+  line-height: 1.1;
+  max-width: 1000px;
+  margin: 0 auto 3.5rem; /* Aumenta o espaço para o subtítulo não ser atropelado */
 }
 
-/* [3] Fixed-height rotating slot — never shifts layout */
+.rslot {
+  display: block;
+  min-height: 4.5em; /* Define uma altura mínima segura para até 4 linhas de texto */
+  position: relative;
+}
+
+.rphrase {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: block;
+  text-align: center;
+  padding: 0 10px;
+}
 .hero-tagline{
   font-size:clamp(2.2rem,6vw,5rem);
   font-weight:900;letter-spacing:-.04em;
@@ -480,8 +484,8 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
   background-repeat:no-repeat;background-position:right 1rem center;
 }
 .btn-sub{
-  width:100%;padding:1.05rem;border:none;border-radius:40px;
-  background:var(--g);color:var(--bg);
+  .hero-tagline { font-size: clamp(1.8rem, 9vw, 2.6rem); margin-bottom: 2.5rem; }
+  .rslot { min-height: 6em; } /* Garante que em telas muito estreitas o texto tenha espaço vertical */
   font-family:'Inter',sans-serif;font-weight:700;font-size:1rem;
   cursor:pointer;position:relative;overflow:hidden;
   transition:transform .2s,box-shadow .2s;

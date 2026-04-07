@@ -47,6 +47,11 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;
 a{text-decoration:none}
 img{max-width:100%;display:block}
 
+/* ── [1] GLOBAL RULE: Fast = white, Nexus = green ── */
+/* Use <span class="brand">Fast<em>Nexus</em></span> everywhere */
+.brand{font-style:normal;color:var(--tx)}
+.brand em{color:var(--g);font-style:normal}
+
 /* ══════════════════════════════════════════════
    PARTICLES
 ══════════════════════════════════════════════ */
@@ -66,8 +71,17 @@ header{position:sticky;top:0;z-index:100;
   transition:box-shadow .3s}
 header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
 .nav{display:flex;justify-content:space-between;align-items:center;padding:.9rem 0}
-.logo{font-size:1.7rem;font-weight:800;letter-spacing:-.04em;cursor:default}
-.logo em{color:var(--g);font-style:normal}
+
+/* [2] Logo with full-text pulsing glow */
+.logo{
+  font-size:1.7rem;font-weight:800;letter-spacing:-.04em;cursor:default;
+  animation:logoPulse 3s ease-in-out infinite;
+}
+@keyframes logoPulse{
+  0%,100%{text-shadow:0 0 8px rgba(0,255,136,.25),0 0 20px rgba(0,255,136,.1)}
+  50%    {text-shadow:0 0 16px rgba(0,255,136,.7),0 0 36px rgba(0,255,136,.35),0 0 60px rgba(0,255,136,.15)}
+}
+
 .nl{display:flex;gap:1.8rem;align-items:center}
 .nl a{color:var(--mu);font-weight:500;font-size:.9rem;
   transition:color .2s;position:relative}
@@ -81,13 +95,13 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
 .nc:hover{transform:translateY(-2px);box-shadow:0 6px 18px var(--gglow)}
 
 /* burger */
-.bg2{display:none;flex-direction:column;gap:5px;cursor:pointer;
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;
   background:none;border:none;padding:4px}
-.bg2 span{display:block;width:22px;height:2px;background:var(--tx);
+.hbg span{display:block;width:22px;height:2px;background:var(--tx);
   border-radius:2px;transition:all .3s cubic-bezier(.4,0,.2,1)}
-.bg2.open span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--g)}
-.bg2.open span:nth-child(2){opacity:0;transform:scaleX(0)}
-.bg2.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--g)}
+.hbg.open span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--g)}
+.hbg.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hbg.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--g)}
 .mm{display:none;flex-direction:column;background:rgba(9,9,11,.97);
   backdrop-filter:blur(16px);border-top:1px solid var(--bd);
   overflow:hidden;max-height:0;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
@@ -112,7 +126,6 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
   position:relative;
   border-bottom:1px solid rgba(255,255,255,.05);
 }
-/* subtle radial glow behind text */
 .hero::before{
   content:'';position:absolute;
   top:50%;left:50%;transform:translate(-50%,-60%);
@@ -134,31 +147,38 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
 }
 .hero-brand{
   font-size:clamp(1rem,2vw,1.35rem);
-  font-weight:700;color:var(--g);letter-spacing:.02em;
+  font-weight:700;letter-spacing:.02em;
   margin-bottom:.6rem;
+  /* Fast = tx, Nexus = green via .brand/.brand em */
 }
+
+/* [3] Fixed-height rotating slot — never shifts layout */
 .hero-tagline{
   font-size:clamp(2.2rem,6vw,5rem);
   font-weight:900;letter-spacing:-.04em;
-  line-height:1.1;
-  max-width:900px;
+  line-height:1.15;
+  max-width:960px;
   margin:0 auto 2rem;
 }
-/* rotating phrase slot */
 .rslot{
+  /* Reserve exactly 2 lines at the current font-size.
+     2 lines × 1.15 line-height = 2.3em */
   display:block;
-  min-height:1.1em;
-  position:relative;
+  height:2.3em;
   overflow:hidden;
+  position:relative;
 }
 .rphrase{
+  position:absolute;
+  width:100%;
+  top:0;left:0;
   display:block;
-  transition:none;
+  text-align:center;
 }
-.rphrase.out{animation:pOut .3s ease forwards}
+.rphrase.out{animation:pOut .3s ease forwards;pointer-events:none}
 .rphrase.in {animation:pIn  .4s ease forwards}
-@keyframes pOut{to{opacity:0;transform:translateY(-16px)}}
-@keyframes pIn {from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes pOut{to{opacity:0;transform:translateY(-14px)}}
+@keyframes pIn {from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 
 .hero-sub{
   font-size:clamp(.95rem,1.8vw,1.15rem);color:var(--mu);
@@ -192,38 +212,62 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
 .btn-o:hover{border-color:var(--g);color:var(--g);transform:translateY(-2px)}
 
 /* ══════════════════════════════════════════════
-   PLATFORM TICKER
+   [4] PLATFORM TICKER — bigger, no pause on hover,
+       green glow on hovered item only
 ══════════════════════════════════════════════ */
-.ticker-wrap{
+.ticker-section{
+  position:relative;z-index:2;
   border-top:1px solid var(--bd);
   border-bottom:1px solid var(--bd);
   background:var(--bg2);
+}
+.ticker-label{
+  text-align:center;
+  font-size:.72rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mu);
+  padding:1.4rem 0 .6rem;
+}
+.ticker-more{
+  text-align:center;
+  font-size:.9rem;font-weight:700;
+  color:var(--g);letter-spacing:.04em;
+  padding:.6rem 0 1.4rem;
+  animation:neonPulse 2.2s ease-in-out infinite;
+}
+@keyframes neonPulse{
+  0%,100%{text-shadow:0 0 8px rgba(0,255,136,.65),0 0 20px rgba(0,255,136,.25)}
+  50%    {text-shadow:0 0 16px rgba(0,255,136,1),0 0 40px rgba(0,255,136,.55),0 0 65px rgba(0,255,136,.2)}
+}
+.ticker-wrap{
   overflow:hidden;
-  padding:.9rem 0;
-  position:relative;z-index:2;
-  /* fade edges */
-  mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%);
-  -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%);
+  padding:.6rem 0;
+  mask-image:linear-gradient(to right,transparent 0%,#000 6%,#000 94%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 6%,#000 94%,transparent 100%);
 }
 .ticker-track{
   display:flex;
   width:max-content;
-  animation:tickerMove 28s linear infinite;
+  /* NOTE: no :hover pause — items glow individually instead */
+  animation:tickerMove 36s linear infinite;
 }
-.ticker-track:hover{animation-play-state:paused}
 @keyframes tickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .ticker-item{
-  display:inline-flex;align-items:center;gap:.65rem;
+  display:inline-flex;align-items:center;gap:.8rem;
   white-space:nowrap;
-  padding:0 2.5rem;
-  font-size:.88rem;font-weight:600;color:var(--mu);
-  letter-spacing:.04em;
-  transition:color .2s;
+  padding:0 3rem;
+  font-size:1.05rem;font-weight:600;color:var(--mu);
+  letter-spacing:.05em;
+  transition:color .25s,text-shadow .25s;
+  cursor:default;
 }
-.ticker-item:hover{color:var(--g)}
+/* [4] hover = green glow, no pause */
+.ticker-item:hover{
+  color:var(--g);
+  text-shadow:0 0 12px rgba(0,255,136,.7),0 0 28px rgba(0,255,136,.3);
+}
 .ticker-item .dot{
   width:5px;height:5px;border-radius:50%;
-  background:var(--g);opacity:.5;flex-shrink:0;
+  background:var(--g);opacity:.4;flex-shrink:0;
 }
 
 /* ══════════════════════════════════════════════
@@ -243,18 +287,48 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
 .ssub{color:var(--mu);font-size:1rem;max-width:580px;line-height:1.75;margin-bottom:3rem}
 
 /* ══════════════════════════════════════════════
-   HOW IT WORKS
+   [5] HOW IT WORKS — animated line left→right
 ══════════════════════════════════════════════ */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;position:relative}
-.steps::before{
-  content:'';position:absolute;top:32px;left:10%;right:10%;height:1px;
-  background:linear-gradient(90deg,transparent,var(--g) 30%,var(--g) 70%,transparent);
-  opacity:.14;pointer-events:none;
+.steps-outer{position:relative}
+
+/* The track line behind all cards */
+.step-line{
+  position:absolute;
+  /* vertically centred on the step numbers (46px tall, ~2rem margin above content area) */
+  top:23px; /* half of snum height */
+  left:calc(12.5% + 23px); /* center of first snum */
+  right:calc(12.5% + 23px);/* center of last snum  */
+  height:2px;
+  background:rgba(0,255,136,.1);
+  overflow:hidden;
+  border-radius:2px;
+  pointer-events:none;
+}
+/* animated fill that sweeps left→right once the section is visible */
+.step-line::after{
+  content:'';
+  position:absolute;
+  top:0;left:0;height:100%;width:100%;
+  background:linear-gradient(90deg,var(--g),rgba(0,255,136,.4));
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform 1.4s cubic-bezier(.4,0,.2,1);
+  border-radius:2px;
+  box-shadow:0 0 12px rgba(0,255,136,.5);
+}
+.step-line.animate::after{transform:scaleX(1)}
+
+.steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.2rem;
+  position:relative;
 }
 .step{
   background:var(--bg2);border:1px solid rgba(255,255,255,.07);
   border-radius:var(--r);padding:2rem 1.4rem;text-align:center;
   transition:all .3s ease;
+  position:relative;z-index:1; /* above the line */
 }
 .step:hover{border-color:var(--bd);transform:translateY(-5px);
   box-shadow:0 12px 28px rgba(0,255,136,.08)}
@@ -310,12 +384,11 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
 }
 .ptab.active{background:var(--g);color:var(--bg)}
 .ptab:not(.active):hover{color:var(--tx)}
-
 .pricing-panel{display:none}
 .pricing-panel.show{display:grid}
-
-/* setup */
 .setup-grid{grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.maint-grid{grid-template-columns:repeat(3,1fr);gap:1.3rem}
+
 .pcard{
   background:var(--bg2);border:1px solid rgba(255,255,255,.08);
   border-radius:24px;padding:2rem 1.6rem;
@@ -367,9 +440,10 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
 .btn-plan:hover{transform:translateY(-2px);box-shadow:0 6px 18px var(--gglow)}
 .btn-plan.ghost{background:transparent;border:1.5px solid var(--g);color:var(--g)}
 .btn-plan.ghost:hover{background:var(--g10)}
-
-/* maintenance */
-.maint-grid{grid-template-columns:repeat(3,1fr);gap:1.3rem}
+/* [6] disclaimer under pricing */
+.pricing-note{
+  margin-top:1.8rem;font-size:.76rem;color:#52525B;text-align:center;line-height:1.7;
+}
 
 /* ══════════════════════════════════════════════
    FORM
@@ -401,7 +475,10 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
 }
 .fg input::placeholder,.fg textarea::placeholder{color:#52525B}
 .fg textarea{resize:vertical;min-height:88px}
-.fg select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23A1A1AA' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center}
+.fg select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23A1A1AA' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 1rem center;
+}
 .btn-sub{
   width:100%;padding:1.05rem;border:none;border-radius:40px;
   background:var(--g);color:var(--bg);
@@ -433,7 +510,6 @@ footer{
   position:relative;z-index:2;
 }
 .flogo{font-size:1.6rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.3rem}
-.flogo em{color:var(--g);font-style:normal}
 footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
 .socrow{display:flex;justify-content:center;gap:1rem;margin-bottom:1.8rem}
 .socrow a{
@@ -485,7 +561,6 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}
 .d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-/* scroll-to-top */
 .stt{position:fixed;bottom:1.5rem;left:1.5rem;width:40px;height:40px;
   border-radius:50%;background:var(--bg2);border:1px solid var(--bd);
   color:var(--g);font-size:.9rem;display:flex;align-items:center;
@@ -498,18 +573,30 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
    RESPONSIVE
 ══════════════════════════════════════════════ */
 @media(max-width:900px){
-  .nl{display:none}.bg2{display:flex}.mm{display:flex}
-  .setup-grid,.maint-grid{grid-template-columns:1fr}
-  .roi{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr 1fr}
-  .steps::before{display:none}
+  .nl{display:none}.hbg{display:flex}.mm{display:flex}
+  .setup-grid,.maint-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}
+  .roi{grid-template-columns:1fr;max-width:420px;margin:0 auto}
+  /* [5] Vertical line on tablet */
+  .step-line{
+    display:none; /* hidden; vertical handled below */
+  }
+  .steps{grid-template-columns:1fr 1fr;gap:1.5rem;padding-left:28px}
+  /* vertical line on left side */
+  .steps-outer::before{
+    content:'';
+    position:absolute;
+    left:0;top:23px;bottom:23px;width:2px;
+    background:rgba(0,255,136,.1);
+    border-radius:2px;overflow:hidden;
+  }
 }
 @media(max-width:640px){
   .hero{padding:3.5rem 0 3rem}
   .hero-tagline{font-size:clamp(1.9rem,8vw,2.8rem)}
+  .rslot{height:2.5em} /* a bit more room at small sizes */
   .hero-acts{flex-direction:column;align-items:stretch}
   .hero-acts a,.hero-acts button{justify-content:center}
-  .steps{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr;padding-left:28px}
   .frow{grid-template-columns:1fr}
   .fshell{padding:1.6rem;border-radius:20px}
   .pricing-tabs{flex-direction:column;border-radius:16px;width:100%}
@@ -534,18 +621,19 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
   <i class="fab fa-whatsapp"></i>
 </a>
 
-<!-- ────────────── HEADER ────────────── -->
+<!-- ══════════════ HEADER ══════════════ -->
 <header id="hdr">
   <div class="wrap">
     <nav class="nav">
-      <div class="logo">Fast<em>Nexus</em></div>
+      <!-- [1][2] Fast=branco, Nexus=verde, glow pulsante no logo inteiro -->
+      <div class="logo"><span class="brand">Fast<em>Nexus</em></span></div>
       <div class="nl">
         <a href="#como-funciona">Como funciona</a>
         <a href="#planos">Planos</a>
         <a href="#beneficios">Benefícios</a>
         <a href="#analise" class="nc">Quero uma análise</a>
       </div>
-      <button class="bg2" id="bg2" aria-label="Menu" aria-expanded="false">
+      <button class="hbg" id="hbg" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </nav>
@@ -558,16 +646,18 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
   </nav>
 </header>
 
-<!-- ────────────── HERO ────────────── -->
+<!-- ══════════════ HERO ══════════════ -->
 <section class="hero">
-  <div class="wrap" style="max-width:880px;text-align:center">
+  <div class="wrap" style="max-width:900px;text-align:center">
 
     <div class="hero-badge"><i class="fas fa-bolt"></i> Gestão 100% feita para você</div>
 
-    <p class="hero-brand">FastNexus —</p>
+    <!-- [1] Fast=branco, Nexus=verde -->
+    <p class="hero-brand"><span class="brand">Fast<em>Nexus</em></span> —</p>
 
+    <!-- [3] Fixed-height slot, never shifts content below -->
     <h1 class="hero-tagline">
-      <span class="rslot">
+      <span class="rslot" aria-live="polite">
         <span class="rphrase" id="rphrase">Menos tempo operando,<br>mais tempo vendendo.</span>
       </span>
     </h1>
@@ -584,157 +674,60 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
   </div>
 </section>
 
-<!-- ────────────── TICKER ────────────── -->
-<div class="ticker-wrap" aria-hidden="true">
-  <div class="ticker-track" id="ticker">
-    <!-- duplicated for seamless loop; JS injects -->
+<!-- ══════════════ TICKER ══════════════ -->
+<!-- [4] Label above, "E muito mais" below, items glow on hover (no pause) -->
+<div class="ticker-section">
+  <p class="ticker-label">Plataformas que operamos</p>
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker-track" id="ticker"></div>
   </div>
+  <p class="ticker-more">✦ E muito mais</p>
 </div>
 
-<!-- ────────────── COMO FUNCIONA ────────────── -->
+<!-- ══════════════ [7] ORDER: Como funciona → Benefícios → Planos → Análise ══════════════ -->
+
+<!-- COMO FUNCIONA -->
 <section class="sec" id="como-funciona">
   <div class="wrap">
     <div class="sbadge rv"><i class="fas fa-map-signs"></i> Simples e rápido</div>
     <h2 class="stitle rv d1">Como funciona</h2>
     <p class="ssub rv d2">Do primeiro contato ao catálogo publicado — sem você precisar mexer em nada.</p>
 
-    <div class="steps">
-      <div class="step rv">
-        <div class="snum">1</div>
-        <h4>Você entra em contato</h4>
-        <p>Nos envia o catálogo atual (foto, PDF ou lista) e escolhe as plataformas desejadas.</p>
+    <!-- [5] Line + steps wrapper -->
+    <div class="steps-outer rv d2" style="position:relative">
+      <div class="step-line" id="step-line"></div>
+      <div class="steps">
+        <div class="step">
+          <div class="snum">1</div>
+          <h4>Você entra em contato</h4>
+          <p>Nos envia o catálogo atual (foto, PDF ou lista) e escolhe as plataformas desejadas.</p>
+        </div>
+        <div class="step">
+          <div class="snum">2</div>
+          <h4>Nós operamos tudo</h4>
+          <p>Cadastramos, organizamos, criamos descrições e otimizamos cada produto para converter.</p>
+        </div>
+        <div class="step">
+          <div class="snum">3</div>
+          <h4>Entrega em até 24h</h4>
+          <p>Seu catálogo digital pronto, publicado e funcionando em até 24 horas úteis.</p>
+        </div>
+        <div class="step">
+          <div class="snum">4</div>
+          <h4>Manutenção opcional</h4>
+          <p>Com um plano recorrente, atualizamos preços, estoque e novos produtos quando precisar.</p>
+        </div>
       </div>
-      <div class="step rv d1">
-        <div class="snum">2</div>
-        <h4>Nós operamos tudo</h4>
-        <p>Cadastramos, organizamos, criamos descrições e otimizamos cada produto para converter.</p>
-      </div>
-      <div class="step rv d2">
-        <div class="snum">3</div>
-        <h4>Entrega em até 24h</h4>
-        <p>Seu catálogo digital pronto, publicado e funcionando em até 24 horas úteis.*</p>
-      </div>
-      <div class="step rv d3">
-        <div class="snum">4</div>
-        <h4>Manutenção opcional</h4>
-        <p>Com um plano recorrente, atualizamos preços, estoque e novos produtos quando precisar.</p>
-      </div>
-    </div>
-    <p style="margin-top:1.5rem;font-size:.76rem;color:#52525B;text-align:center">
-      *Prazo médio de 24h úteis. Catálogos com mais de 250 produtos podem ter prazo diferenciado — consultar antes do início.
-    </p>
-  </div>
-</section>
-
-<!-- ────────────── PLANOS ────────────── -->
-<section class="sec" id="planos">
-  <div class="wrap">
-    <div class="sbadge rv"><i class="fas fa-layer-group"></i> Transparência total</div>
-    <h2 class="stitle rv d1">Escolha seu plano</h2>
-    <p class="ssub rv d2">Setup único sem mensalidade ou manutenção recorrente para quem quer atualização contínua. Você escolhe o que faz mais sentido para o seu negócio.</p>
-
-    <!-- tabs -->
-    <div class="pricing-tabs rv d2">
-      <button class="ptab active" data-tab="setup">Setup único</button>
-      <button class="ptab"        data-tab="manut">Manutenção mensal</button>
-    </div>
-
-    <!-- SETUP ÚNICO -->
-    <div class="pricing-panel setup-grid show" id="tab-setup">
-
-      <div class="pcard rv">
-        <div class="pcard-name">Start</div>
-        <div class="pcard-desc">Ideal para quem está começando em uma única plataforma.</div>
-        <div class="pcard-price"><sup>R$</sup>150 <small>pagamento único</small></div>
-        <ul class="pcard-feats">
-          <li><i class="fas fa-check-circle"></i> Até 100 produtos</li>
-          <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
-          <li><i class="fas fa-check-circle"></i> Entrega em até 24h*</li>
-          <li><i class="fas fa-check-circle"></i> Cadastro + organização</li>
-        </ul>
-        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse no plano Start (R$150)." target="_blank" class="btn-plan ghost">Contratar via WhatsApp</a>
-      </div>
-
-      <div class="pcard hot rv d1">
-        <div class="pcard-name">Growth</div>
-        <div class="pcard-desc">Para negócios em expansão com catálogo médio.</div>
-        <div class="pcard-price"><sup>R$</sup>249 <small>pagamento único</small></div>
-        <ul class="pcard-feats">
-          <li><i class="fas fa-check-circle"></i> Até 250 produtos</li>
-          <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
-          <li><i class="fas fa-check-circle"></i> Entrega em até 24h*</li>
-          <li><i class="fas fa-check-circle"></i> Descrições otimizadas</li>
-        </ul>
-        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse no plano Growth (R$249)." target="_blank" class="btn-plan">Contratar via WhatsApp</a>
-      </div>
-
-      <div class="pcard rv d2">
-        <div class="pcard-name">Scale</div>
-        <div class="pcard-desc">Catálogo avançado em múltiplas plataformas simultaneamente.</div>
-        <div class="pcard-price"><sup>R$</sup>399 <small>pagamento único</small></div>
-        <ul class="pcard-feats">
-          <li><i class="fas fa-check-circle"></i> Catálogo avançado</li>
-          <li><i class="fas fa-check-circle"></i> Múltiplas plataformas</li>
-          <li><i class="fas fa-check-circle"></i> Entrega em até 24h*</li>
-          <li><i class="fas fa-check-circle"></i> Otimização para conversão</li>
-        </ul>
-        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse no plano Scale (R$399)." target="_blank" class="btn-plan ghost">Contratar via WhatsApp</a>
-      </div>
-
-    </div>
-
-    <!-- MANUTENÇÃO -->
-    <div class="pricing-panel maint-grid" id="tab-manut">
-
-      <div class="pcard rv">
-        <div class="pcard-name">Operação Lite</div>
-        <div class="pcard-desc">Atualizações simples e pontuais no catálogo.</div>
-        <div class="pcard-price"><sup>R$</sup>79 <small>/mês</small></div>
-        <ul class="pcard-feats">
-          <li><i class="fas fa-check-circle"></i> Atualizações simples</li>
-          <li><i class="fas fa-check-circle"></i> Até 10 alterações/mês</li>
-          <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
-          <li><i class="fas fa-check-circle"></i> Suporte por WhatsApp</li>
-        </ul>
-        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse na Operação Lite (R$79/mês)." target="_blank" class="btn-plan ghost">Assinar via WhatsApp</a>
-      </div>
-
-      <div class="pcard hot rv d1">
-        <div class="pcard-name">Operação Pro</div>
-        <div class="pcard-desc">Alta frequência de alterações e múltiplos produtos.</div>
-        <div class="pcard-price"><sup>R$</sup>149 <small>/mês</small></div>
-        <ul class="pcard-feats">
-          <li><i class="fas fa-check-circle"></i> Alta frequência</li>
-          <li><i class="fas fa-check-circle"></i> Até 30 alterações/mês</li>
-          <li><i class="fas fa-check-circle"></i> 2 plataformas</li>
-          <li><i class="fas fa-check-circle"></i> Atendimento prioritário</li>
-        </ul>
-        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse na Operação Pro (R$149/mês)." target="_blank" class="btn-plan">Assinar via WhatsApp</a>
-      </div>
-
-      <div class="pcard rv d2">
-        <div class="pcard-name">Operação Full</div>
-        <div class="pcard-desc">Operação contínua com prioridade máxima.</div>
-        <div class="pcard-price"><sup>R$</sup>299 <small>/mês</small></div>
-        <ul class="pcard-feats">
-          <li><i class="fas fa-check-circle"></i> Operação contínua</li>
-          <li><i class="fas fa-check-circle"></i> Alterações ilimitadas</li>
-          <li><i class="fas fa-check-circle"></i> Múltiplas plataformas</li>
-          <li><i class="fas fa-check-circle"></i> Prioridade máxima</li>
-        </ul>
-        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse na Operação Full (R$299/mês)." target="_blank" class="btn-plan ghost">Assinar via WhatsApp</a>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- ────────────── BENEFÍCIOS / ROI ────────────── -->
+<!-- BENEFÍCIOS / ROI -->
 <section class="sec" id="beneficios">
   <div class="wrap">
     <div class="sbadge rv"><i class="fas fa-chart-line"></i> Por que vale a pena</div>
     <h2 class="stitle rv d1">Um catálogo bem-feito<br>vira investimento</h2>
-    <p class="ssub rv d2">Cada detalhe influencia a decisão de compra. Com o catálogo certo, seu produto aparece, convence e vende — e o custo da FastNexus se paga na primeira semana.</p>
+    <p class="ssub rv d2">Cada detalhe influencia a decisão de compra. Com o catálogo certo, seu produto aparece, convence e vende — e o custo da <span class="brand">Fast<em>Nexus</em></span> se paga na primeira semana.</p>
 
     <div class="roi">
       <div class="roic rv">
@@ -746,7 +739,7 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
       <div class="roic rv d1">
         <i class="riico fas fa-fire"></i>
         <h4>Produtos que convencem</h4>
-        <p>Títulos otimizados, fotos bem posicionadas e descrições que respondem às dúvidas do cliente antes mesmo de ele perguntar.</p>
+        <p>Títulos otimizados, descrições que respondem às dúvidas do cliente antes mesmo de ele perguntar — e fotos bem posicionadas.</p>
         <span class="rtag">↑ Mais conversão</span>
       </div>
       <div class="roic rv d2">
@@ -759,7 +752,106 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
   </div>
 </section>
 
-<!-- ────────────── ANÁLISE / FORM ────────────── -->
+<!-- PLANOS -->
+<section class="sec" id="planos">
+  <div class="wrap">
+    <div class="sbadge rv"><i class="fas fa-layer-group"></i> Transparência total</div>
+    <h2 class="stitle rv d1">Escolha seu plano</h2>
+    <p class="ssub rv d2">Setup único sem mensalidade, ou manutenção recorrente para quem quer atualização contínua. Você escolhe o que faz mais sentido para o seu negócio.</p>
+
+    <div class="pricing-tabs rv d2">
+      <button class="ptab active" data-tab="setup">Setup único</button>
+      <button class="ptab"        data-tab="manut">Manutenção mensal</button>
+    </div>
+
+    <!-- SETUP ÚNICO -->
+    <div class="pricing-panel setup-grid show" id="tab-setup">
+      <div class="pcard rv">
+        <div class="pcard-name">Start</div>
+        <div class="pcard-desc">Ideal para quem está começando em uma única plataforma.</div>
+        <div class="pcard-price"><sup>R$</sup>150 <small>pagamento único</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Até 100 produtos</li>
+          <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
+          <li><i class="fas fa-check-circle"></i> Entrega em até 24h*</li>
+          <li><i class="fas fa-check-circle"></i> Cadastro + organização</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse no plano Start (R$150)." target="_blank" class="btn-plan ghost">Contratar via WhatsApp</a>
+      </div>
+      <div class="pcard hot rv d1">
+        <div class="pcard-name">Growth</div>
+        <div class="pcard-desc">Para negócios em expansão com catálogo médio.</div>
+        <div class="pcard-price"><sup>R$</sup>249 <small>pagamento único</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Até 250 produtos</li>
+          <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
+          <li><i class="fas fa-check-circle"></i> Entrega em até 24h*</li>
+          <li><i class="fas fa-check-circle"></i> Descrições otimizadas</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse no plano Growth (R$249)." target="_blank" class="btn-plan">Contratar via WhatsApp</a>
+      </div>
+      <div class="pcard rv d2">
+        <div class="pcard-name">Scale</div>
+        <div class="pcard-desc">Catálogo avançado em múltiplas plataformas simultaneamente.</div>
+        <div class="pcard-price"><sup>R$</sup>399 <small>pagamento único</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Catálogo avançado</li>
+          <li><i class="fas fa-check-circle"></i> Múltiplas plataformas</li>
+          <li><i class="fas fa-check-circle"></i> Entrega em até 24h*</li>
+          <li><i class="fas fa-check-circle"></i> Otimização para conversão</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse no plano Scale (R$399)." target="_blank" class="btn-plan ghost">Contratar via WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- MANUTENÇÃO -->
+    <div class="pricing-panel maint-grid" id="tab-manut">
+      <div class="pcard rv">
+        <div class="pcard-name">Operação Lite</div>
+        <div class="pcard-desc">Atualizações simples e pontuais no catálogo.</div>
+        <div class="pcard-price"><sup>R$</sup>79 <small>/mês</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Atualizações simples</li>
+          <li><i class="fas fa-check-circle"></i> Até 10 alterações/mês</li>
+          <li><i class="fas fa-check-circle"></i> 1 plataforma</li>
+          <li><i class="fas fa-check-circle"></i> Suporte por WhatsApp</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse na Operação Lite (R$79/mês)." target="_blank" class="btn-plan ghost">Assinar via WhatsApp</a>
+      </div>
+      <div class="pcard hot rv d1">
+        <div class="pcard-name">Operação Pro</div>
+        <div class="pcard-desc">Alta frequência de alterações e múltiplos produtos.</div>
+        <div class="pcard-price"><sup>R$</sup>149 <small>/mês</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Alta frequência</li>
+          <li><i class="fas fa-check-circle"></i> Até 30 alterações/mês</li>
+          <li><i class="fas fa-check-circle"></i> 2 plataformas</li>
+          <li><i class="fas fa-check-circle"></i> Atendimento prioritário</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse na Operação Pro (R$149/mês)." target="_blank" class="btn-plan">Assinar via WhatsApp</a>
+      </div>
+      <div class="pcard rv d2">
+        <div class="pcard-name">Operação Full</div>
+        <div class="pcard-desc">Operação contínua com prioridade máxima.</div>
+        <div class="pcard-price"><sup>R$</sup>299 <small>/mês</small></div>
+        <ul class="pcard-feats">
+          <li><i class="fas fa-check-circle"></i> Operação contínua</li>
+          <li><i class="fas fa-check-circle"></i> Alterações ilimitadas</li>
+          <li><i class="fas fa-check-circle"></i> Múltiplas plataformas</li>
+          <li><i class="fas fa-check-circle"></i> Prioridade máxima</li>
+        </ul>
+        <a href="https://wa.me/5511937784725?text=Olá! Tenho interesse na Operação Full (R$299/mês)." target="_blank" class="btn-plan ghost">Assinar via WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- [6] Disclaimer moved here, below pricing -->
+    <p class="pricing-note">
+      *Prazo médio de entrega: até 24 horas úteis. Catálogos com mais de 250 produtos podem ter prazo diferenciado — consultar antes do início.
+    </p>
+  </div>
+</section>
+
+<!-- ANÁLISE / FORM -->
 <section class="sec" id="analise">
   <div class="wrap">
     <div class="sbadge rv"><i class="fas fa-search"></i> Sem compromisso</div>
@@ -768,7 +860,6 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
 
     <div class="fshell rv d2">
       <form id="fn-form" novalidate>
-
         <div class="frow">
           <div class="fg">
             <label for="f-nome">Nome completo *</label>
@@ -779,7 +870,6 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
             <input type="text" id="f-neg" name="negocio" required placeholder="Sua empresa ou loja">
           </div>
         </div>
-
         <div class="frow">
           <div class="fg">
             <label for="f-email">E-mail *</label>
@@ -790,7 +880,6 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
             <input type="tel" id="f-fone" name="whatsapp" autocomplete="tel" placeholder="(11) 9 0000-0000">
           </div>
         </div>
-
         <div class="frow">
           <div class="fg">
             <label for="f-plat">Plataformas que utiliza</label>
@@ -813,26 +902,22 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
             </select>
           </div>
         </div>
-
         <div class="fg">
           <label for="f-msg">Conta um pouco sobre seu catálogo (opcional)</label>
           <textarea id="f-msg" name="mensagem" placeholder="Quantos produtos tem? Quais plataformas usa hoje? Qual o maior desafio?"></textarea>
         </div>
-
-        <button type="submit" class="btn-sub" id="btn-sub">
-          Solicitar análise gratuita
-        </button>
+        <button type="submit" class="btn-sub" id="btn-sub">Solicitar análise gratuita</button>
         <div class="fmsg" id="fmsg" role="alert"></div>
-
       </form>
     </div>
   </div>
 </section>
 
-<!-- ────────────── FOOTER ────────────── -->
+<!-- ══════════════ FOOTER ══════════════ -->
 <footer>
   <div class="wrap">
-    <div class="flogo">Fast<em>Nexus</em></div>
+    <!-- [1] Fast=branco, Nexus=verde no rodapé -->
+    <div class="flogo"><span class="brand">Fast<em>Nexus</em></span></div>
     <p class="ftag">Menos tempo operando, mais tempo vendendo.</p>
     <div class="socrow">
       <a href="https://instagram.com/fastnexusbr" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -845,13 +930,14 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
          &nbsp;·&nbsp;
          📱 <a href="https://wa.me/5511937784725">(11) 9 3778-4725</a></p>
       <p>📍 Uberaba – MG &nbsp;·&nbsp; CNPJ em processo de formalização</p>
-      <p style="margin-top:.5rem">© 2025 FastNexus · Todos os direitos reservados.</p>
+      <p style="margin-top:.5rem">© 2025 <span class="brand">Fast<em>Nexus</em></span> · Todos os direitos reservados.</p>
     </div>
   </div>
 </footer>
 
-<!-- ════════════════════ SCRIPTS ════════════════════ -->
+<!-- ══════════════ SCRIPTS ══════════════ -->
 <script>
+
 /* ── PARTICLES ── */
 (function(){
   const c=document.getElementById('fx'),x=c.getContext('2d');
@@ -880,15 +966,14 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
   (function loop(){x.clearRect(0,0,W,H);pts.forEach(p=>{p.tick();p.draw();});requestAnimationFrame(loop)})();
 })();
 
-/* ── TICKER ── */
+/* ── [4] TICKER — no hover pause, just CSS glow handled in stylesheet ── */
 (function(){
   const platforms=[
     'Mercado Livre','Shopee','iFood','Amazon',
-    'Anota AI','Elo7','Enjoei','OLX','Magazine Luiza',
-    'Hotmart','Goomer','Magalu'
+    'Anota AI','Elo7','Enjoei','OLX',
+    'Magazine Luiza','Hotmart','Goomer','Magalu'
   ];
   const track=document.getElementById('ticker');
-  // build two copies for seamless loop
   [0,1].forEach(()=>{
     platforms.forEach(name=>{
       const el=document.createElement('span');
@@ -899,7 +984,7 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
   });
 })();
 
-/* ── ROTATING HERO TEXT ── */
+/* ── [3] ROTATING HERO TEXT (fixed height slot) ── */
 const phrases=[
   'Menos tempo operando,<br>mais tempo vendendo.',
   'Nós operamos seus catálogos<br>enquanto você cresce.',
@@ -921,7 +1006,7 @@ function nextPhrase(){
 }
 setInterval(nextPhrase,3500);
 
-/* ── SCROLL EFFECTS ── */
+/* ── SCROLL / STT ── */
 const hdr=document.getElementById('hdr');
 const stt=document.getElementById('stt');
 addEventListener('scroll',()=>{
@@ -930,22 +1015,33 @@ addEventListener('scroll',()=>{
 },{passive:true});
 
 /* ── HAMBURGER ── */
-const bg2=document.getElementById('bg2'),mm=document.getElementById('mm');
-bg2.addEventListener('click',()=>{
+const hbg=document.getElementById('hbg'),mm=document.getElementById('mm');
+hbg.addEventListener('click',()=>{
   const o=mm.classList.toggle('open');
-  bg2.classList.toggle('open',o);
-  bg2.setAttribute('aria-expanded',o);
+  hbg.classList.toggle('open',o);
+  hbg.setAttribute('aria-expanded',o);
 });
 document.querySelectorAll('.ml').forEach(l=>l.addEventListener('click',()=>{
-  mm.classList.remove('open');bg2.classList.remove('open');
-  bg2.setAttribute('aria-expanded','false');
+  mm.classList.remove('open');hbg.classList.remove('open');
+  hbg.setAttribute('aria-expanded','false');
 }));
 
-/* ── REVEAL ── */
+/* ── SCROLL REVEAL ── */
 const ro=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target);}});
 },{threshold:.1,rootMargin:'0px 0px -25px 0px'});
 document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+/* ── [5] STEP LINE animation — triggers when section enters viewport ── */
+const stepLine=document.getElementById('step-line');
+if(stepLine){
+  const lineObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){stepLine.classList.add('animate');lineObs.unobserve(e.target);}
+    });
+  },{threshold:.4});
+  lineObs.observe(stepLine.closest('.steps-outer'));
+}
 
 /* ── PRICING TABS ── */
 document.querySelectorAll('.ptab').forEach(btn=>{
@@ -954,25 +1050,61 @@ document.querySelectorAll('.ptab').forEach(btn=>{
     document.querySelectorAll('.pricing-panel').forEach(p=>{p.classList.remove('show');p.style.display='none';});
     btn.classList.add('active');
     const panel=document.getElementById('tab-'+btn.dataset.tab);
-    panel.classList.add('show');
-    panel.style.display='grid';
-    // re-trigger reveal for newly shown cards
-    panel.querySelectorAll('.rv:not(.on)').forEach(el=>{
-      el.classList.add('on');
-    });
+    panel.classList.add('show');panel.style.display='grid';
+    panel.querySelectorAll('.rv:not(.on)').forEach(el=>el.classList.add('on'));
   });
 });
-// init: hide manut tab
 document.getElementById('tab-manut').style.display='none';
 
-/* ── FORM — Resend API ── */
+/* ══════════════════════════════════════════════════════════════
+   [8] FORM — Cloudflare Worker + Resend
+
+   Como configurar:
+   1. Crie um Cloudflare Worker com o seguinte código:
+      ─────────────────────────────────────────────
+      export default {
+        async fetch(request) {
+          if (request.method === 'OPTIONS') {
+            return new Response(null, { headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'POST',
+              'Access-Control-Allow-Headers': 'Content-Type',
+            }});
+          }
+          const body = await request.json();
+          const res = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer re_5RcT3uxi_3g7bR41HSYD7BxpX7NnHHxfC',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          });
+          const data = await res.json();
+          return new Response(JSON.stringify(data), {
+            status: res.status,
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            }
+          });
+        }
+      }
+      ─────────────────────────────────────────────
+   2. Copie a URL do Worker (ex: https://fastnexus-mail.SEU-USUARIO.workers.dev)
+   3. Cole a URL na constante WORKER_URL abaixo ↓
+══════════════════════════════════════════════════════════════ */
+
+/* ▼▼▼ ALTERE APENAS ESTA LINHA — cole a URL do seu Worker ▼▼▼ */
+const WORKER_URL = 'https://SEU-WORKER.workers.dev';
+/* ▲▲▲ ─────────────────────────────────────────────────── ▲▲▲ */
+
+const TO_EMAIL   = 'contato@fastnexus.com.br';   /* destinatário — não precisa alterar */
+const FROM_EMAIL = 'contato@fastnexus.com.br';   /* remetente verificado no Resend      */
+
 const form   = document.getElementById('fn-form');
 const fmsg   = document.getElementById('fmsg');
 const btnSub = document.getElementById('btn-sub');
-
-const RESEND_KEY = 're_5RcT3uxi_3g7bR41HSYD7BxpX7NnHHxfC';
-const TO_EMAIL   = 'contato@fastnexus.com.br';
-const FROM_EMAIL = 'contato@fastnexus.com.br'; // troque pelo seu domínio verificado no Resend
 
 form.addEventListener('submit', async function(e){
   e.preventDefault();
@@ -995,7 +1127,7 @@ form.addEventListener('submit', async function(e){
   btnSub.textContent='Enviando…';
 
   const html=`
-    <h2 style="color:#00FF88;font-family:sans-serif">Novo pré-cadastro — FastNexus</h2>
+    <h2 style="color:#00FF88;font-family:sans-serif">Novo pedido de análise — FastNexus</h2>
     <table style="font-family:sans-serif;font-size:15px;border-collapse:collapse;width:100%">
       <tr><td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600;width:140px">Nome</td><td style="padding:8px 12px;border-bottom:1px solid #eee">${nome}</td></tr>
       <tr><td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600">Negócio</td><td style="padding:8px 12px;border-bottom:1px solid #eee">${negocio}</td></tr>
@@ -1008,12 +1140,9 @@ form.addEventListener('submit', async function(e){
   `;
 
   try{
-    const res = await fetch('https://api.resend.com/emails',{
+    const res = await fetch(WORKER_URL,{
       method:'POST',
-      headers:{
-        'Authorization':`Bearer ${RESEND_KEY}`,
-        'Content-Type':'application/json'
-      },
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         from: FROM_EMAIL,
         to:   [TO_EMAIL],
@@ -1024,16 +1153,16 @@ form.addEventListener('submit', async function(e){
     });
 
     if(res.ok){
-      fmsg.innerHTML='✅ Solicitação enviada com sucesso! <br>Nossa equipe entrará em contato em breve.';
+      fmsg.innerHTML='✅ Solicitação enviada com sucesso!<br>Nossa equipe entrará em contato em breve.';
       fmsg.className='fmsg ok';fmsg.style.display='block';
       form.reset();
       if(typeof fbq!=='undefined')fbq('track','Lead');
     } else {
-      const err=await res.json();
+      const err=await res.json().catch(()=>({}));
       throw new Error(err.message||'Erro no servidor');
     }
   } catch(err){
-    fmsg.innerHTML=`❌ Não foi possível enviar agora. <br>Fale conosco pelo <a href="https://wa.me/5511937784725" target="_blank" style="color:#00FF88">WhatsApp</a>.`;
+    fmsg.innerHTML=`❌ Não foi possível enviar agora.<br>Fale conosco pelo <a href="https://wa.me/5511937784725" target="_blank" style="color:#00FF88">WhatsApp</a>.`;
     fmsg.className='fmsg err';fmsg.style.display='block';
     console.error('[FastNexus form]',err);
   } finally {
@@ -1041,6 +1170,7 @@ form.addEventListener('submit', async function(e){
     btnSub.textContent='Solicitar análise gratuita';
   }
 });
+
 </script>
 </body>
 </html>

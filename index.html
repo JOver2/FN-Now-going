@@ -126,25 +126,48 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
   position:relative;
   border-bottom:1px solid rgba(255,255,255,.05);
 }
-.hero::before{
-  content:'';position:absolute;
-  top:50%;left:50%;transform:translate(-50%,-60%);
-  width:min(700px,90vw);height:min(700px,90vw);
-  background:radial-gradient(circle,rgba(0,255,136,.07) 0%,transparent 65%);
-  pointer-events:none;
+/* --- SUBSTITUA DA LINHA 130 ATÉ A 167 POR ESTE BLOCO --- */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: var(--g10);
+  border: 1px solid var(--bd);
+  color: var(--g);
+  font-size: .72rem;
+  font-weight: 700;
+  padding: .35rem 1rem;
+  border-radius: 40px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem; /* Aumentado para desgrudar do texto */
+  animation: badgePulse 3s ease-in-out infinite;
 }
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.3); }
+  50% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+}
+
+.hero-brand {
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: .02em;
+  margin-bottom: 1.2rem; /* Aumentado para dar respiro */
+}
+
 .hero-tagline {
   font-size: clamp(2rem, 5.5vw, 4.5rem);
   font-weight: 900;
   letter-spacing: -.04em;
   line-height: 1.1;
   max-width: 1000px;
-  margin: 0 auto 3.5rem; /* Aumenta o espaço para o subtítulo não ser atropelado */
+  margin: 0 auto 3.5rem; /* Espaço extra para o subtítulo não ser atropelado */
 }
 
 .rslot {
   display: block;
-  min-height: 4.5em; /* Define uma altura mínima segura para até 4 linhas de texto */
+  min-height: 4.5em; /* Altura mínima para suportar quebras de linha */
   position: relative;
 }
 
@@ -155,15 +178,8 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
   left: 0;
   display: block;
   text-align: center;
-  padding: 0 10px;
 }
-.hero-tagline{
-  font-size:clamp(2.2rem,6vw,5rem);
-  font-weight:900;letter-spacing:-.04em;
-  line-height:1.15;
-  max-width:960px;
-  margin:0 auto 2rem;
-}
+/* --- FIM DA SUBSTITUIÇÃO --- */
 .rslot{
   /* Reserve exactly 2 lines at the current font-size.
      2 lines × 1.15 line-height = 2.3em */

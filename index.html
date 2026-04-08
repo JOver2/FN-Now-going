@@ -963,53 +963,100 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
 <!-- ══════════════ SCRIPTS ══════════════ -->
 <script>
 
-/* ── PARTICLES ── */
+/* ── PARTICLES (Mouse + Constelação) ── */
 (function(){
-  const c=document.getElementById('fx'),x=c.getContext('2d');
-  let W,H,pts=[];
-  const resize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};
-  resize();addEventListener('resize',resize,{passive:true});
+  const c = document.getElementById('fx'), x = c.getContext('2d');
+  let W, H, pts = [];
+  const resize = () => { W = c.width = innerWidth; H = c.height = innerHeight };
+  resize(); 
+  addEventListener('resize', resize, {passive: true});
+
+  // Rastreador do mouse
+  let mouse = { x: null, y: null, radius: 100 };
+  addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  }, {passive: true});
+  addEventListener('mouseout', () => {
+    mouse.x = null;
+    mouse.y = null;
+  }, {passive: true});
   
-  function P(){this.reset()}
+  function P(){ this.reset() }
   
-  P.prototype.reset=function(){
-    this.x=Math.random()*W;
-    this.y=Math.random()*H;
-    // Tamanho aumentado: agora até 2.5px
-    this.r=Math.random()*2.0+0.5; 
-    this.speed=Math.random()*.15+.05;
-    this.angle=Math.random()*Math.PI*2;
-    this.alpha=Math.random()*.7+.3; 
-    this.life=0;
-    this.max=Math.random()*260+160;
+  P.prototype.reset = function(){
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.r = Math.random() * 2.2 + 0.8; 
+    this.speed = Math.random() * .15 + .05;
+    this.angle = Math.random() * Math.PI * 2;
+    this.alpha = Math.random() * .8 + .4; 
+    this.life = 0;
+    this.max = Math.random() * 260 + 160;
   };
 
-  P.prototype.tick=function(){
-    this.x+=Math.cos(this.angle)*this.speed;
-    this.y+=Math.sin(this.angle)*this.speed-.07;
+  P.prototype.tick = function(){
+    this.x += Math.cos(this.angle) * this.speed;
+    this.y += Math.sin(this.angle) * this.speed - .07;
+
+    // Fuga do mouse
+    if (mouse.x != null && mouse.y != null) {
+      let dx = this.x - mouse.x;
+      let dy = this.y - mouse.y;
+      let distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < mouse.radius) {
+        let force = (mouse.radius - distance) / mouse.radius;
+        this.x += (dx / distance) * force * 3;
+        this.y += (dy / distance) * force * 3;
+      }
+    }
+
     this.life++;
-    if(this.life>this.max||this.y<-8) this.reset();
+    if (this.life > this.max || this.y < -8 || this.x < -8 || this.x > W + 8) this.reset();
   };
 
-  P.prototype.draw=function(){
-    const f=this.life<60?this.life/60:this.life>this.max-60?(this.max-this.life)/60:1;
+  P.prototype.draw = function(){
+    const f = this.life < 60 ? this.life / 60 : this.life > this.max - 60 ? (this.max - this.life) / 60 : 1;
     x.beginPath();
-    x.arc(this.x,this.y,this.r,0,Math.PI*2);
-    x.fillStyle=`rgba(0,255,136,${this.alpha*f})`;
+    x.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    x.shadowBlur = 8;
+    x.shadowColor = 'rgba(0,255,136,0.8)';
+    x.fillStyle = `rgba(0,255,136,${this.alpha * f})`;
     x.fill();
-    // Adiciona brilho individual (glow)
-    x.shadowBlur = 5;
-    x.shadowColor = 'rgba(0,255,136,0.5)';
+    x.shadowBlur = 0; 
   };
 
-  // Quantidade: 150 no computador e 60 no celular
-  const N=innerWidth<600?60:150;
-  for(let i=0;i<N;i++)pts.push(new P());
+  // Quantidade otimizada para a constelação não pesar
+  const N = innerWidth < 600 ? 50 : 120;
+  for(let i = 0; i < N; i++) pts.push(new P());
 
   (function loop(){
-    x.clearRect(0,0,W,H);
-    x.shadowBlur = 0; // Reset para performance
-    pts.forEach(p=>{p.tick();p.draw();});
+    x.clearRect(0, 0, W, H);
+    
+    // 1. Atualiza e desenha as partículas
+    pts.forEach(p => { p.tick(); p.draw(); });
+
+    // 2. Cria as linhas da constelação
+    for(let i = 0; i < N; i++) {
+      for(let j = i + 1; j < N; j++) {
+        let dx = pts[i].x - pts[j].x;
+        let dy = pts[i].y - pts[j].y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Se estiverem perto (85px), desenha a linha
+        if(dist < 85) { 
+          x.beginPath();
+          // A linha fica mais transparente quanto mais longe as partículas estão
+          x.strokeStyle = `rgba(0, 255, 136, ${(1 - dist/85) * 0.25})`; 
+          x.lineWidth = 0.8;
+          x.moveTo(pts[i].x, pts[i].y);
+          x.lineTo(pts[j].x, pts[j].y);
+          x.stroke();
+        }
+      }
+    }
+    
     requestAnimationFrame(loop)
   })();
 })();

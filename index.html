@@ -594,17 +594,33 @@ header.sc{box-shadow:0 4px 32px rgba(0,255,136,.06)}
   background:rgba(255,255,255,.18);
   transform:translateX(-110%) skewX(-15deg);transition:transform .45s}
 .btn-sub:hover::after{transform:translateX(110%) skewX(-15deg)}
-.btn-sub:hover{transform:translateY(-2px);box-shadow:0 8px 26px var(--gglow)}
-.btn-sub:disabled{opacity:.55;cursor:not-allowed;transform:none}
-.fmsg{
-  margin-top:1rem;padding:.9rem 1rem;border-radius:12px;
-  font-size:.9rem;text-align:center;display:none;
-  animation:msgIn .35s ease;
+.btn-sub {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  background: var(--g);
+  color: #050505;
+  padding: 1.1rem;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  /* Isso aqui é o que vai dar o respiro que faltava: */
+  margin-top: 2.5rem; 
+  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
 }
-@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
-.fmsg.ok {background:rgba(0,255,136,.08);color:var(--g);border:1px solid rgba(0,255,136,.28)}
-.fmsg.err{background:rgba(248,113,113,.08);color:#f87171;border:1px solid rgba(248,113,113,.28)}
 
+.btn-sub:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px var(--gglow);
+  filter: brightness(1.1);
+}
 /* ══════════════════════════════════════════════
    FOOTER
 ══════════════════════════════════════════════ */
@@ -1055,7 +1071,9 @@ footer .ftag{font-size:.85rem;color:var(--mu);margin-bottom:1.6rem}
           <label for="f-msg">Conta um pouco sobre seu catálogo (opcional)</label>
           <textarea id="f-msg" name="mensagem" placeholder="Quantos produtos tem? Quais plataformas usa hoje? Qual o maior desafio?"></textarea>
         </div>
-        <button type="submit" class="btn-sub" id="btn-sub">Solicitar análise gratuita</button>
+        <button type="submit" class="btn-sub" id="btn-sub">
+  Solicitar análise gratuita <i class="fas fa-arrow-right"></i>
+</button>
         <div class="fmsg" id="fmsg" role="alert"></div>
       </form>
     </div>

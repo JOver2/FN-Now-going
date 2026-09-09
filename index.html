@@ -1,214 +1,277 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastNexus - Em Breve</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-  
+  <meta charset="utf-8">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Ferramentas para simplificar o dia a dia do seu negócio. Conheça a proposta do FastNexus Tax, nosso primeiro produto de consulta tributária.">
+  <meta name="theme-color" content="#09090b">
+  <title>FastNexus — Menos complicação na sua rotina.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --g: #00ff88;
-      --bg: #050505;
+      --green:#00ff88;
+      --green-soft:rgba(0,255,136,.11);
+      --green-line:rgba(0,255,136,.22);
+      --yellow:#ffd84d;
+      --blue:#4da3ff;
+      --orange:#ff8a3d;
+      --lime:#b7ff4d;
+      --bg:#09090b;
+      --surface:#111113;
+      --surface-2:#18181b;
+      --text:#f4f4f5;
+      --muted:#a1a1aa;
+      --muted-2:#71717a;
+      --line:rgba(255,255,255,.09);
+      --radius:22px;
     }
-    
-    * { 
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:88px}
+    body{min-width:320px;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.6;overflow-x:hidden;opacity:0;animation:body-in .45s ease forwards}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% -15%,rgba(0,255,136,.12),transparent 36%),linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:auto,54px 54px,54px 54px;mask-image:linear-gradient(to bottom,#000 0,transparent 72%);z-index:-2}
+    @keyframes body-in{to{opacity:1}}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .wrap{width:min(1180px,calc(100% - 40px));margin-inline:auto}
+    .brand{font-weight:850;letter-spacing:-.055em}.brand em{color:var(--green);font-style:normal}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;padding:7px 12px;border:1px solid var(--green-line);border-radius:999px;background:var(--green-soft);color:var(--green);font-size:.78rem;font-weight:750;letter-spacing:.05em;text-transform:uppercase}
+    .eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 16px currentColor;animation:pulse 2.4s ease-in-out infinite}
+    @keyframes pulse{50%{opacity:.35;transform:scale(.75)}}
+
+    header{position:sticky;top:0;z-index:30;background:rgba(9,9,11,.78);border-bottom:1px solid transparent;backdrop-filter:blur(20px);transition:.25s ease}
+    header.scrolled{border-bottom-color:var(--line);background:rgba(9,9,11,.93)}
+    .nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:28px}
+    .logo{font-size:1.55rem;animation:logo-glow 3.4s ease-in-out infinite}
+    @keyframes logo-glow{50%{text-shadow:0 0 24px rgba(0,255,136,.42)}}
+    .links{display:flex;align-items:center;gap:30px;color:var(--muted);font-size:.9rem;font-weight:550}
+    .links a{transition:color .2s}.links a:hover,.links a:focus-visible{color:var(--text)}
+    .nav-cta,.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:999px;font-weight:720;transition:transform .2s,box-shadow .2s,border-color .2s,background .2s}
+    .nav-cta{padding:9px 16px;background:var(--green);color:#06100b;font-size:.86rem}
+    .nav-cta:hover,.primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,255,136,.25)}
+    .burger{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);cursor:pointer}
+
+    .hero{min-height:calc(100svh - 72px);display:grid;align-items:center;padding:80px 0 64px;position:relative}
+    .hero-inner{max-width:980px;margin:auto;text-align:center}
+    .hero .eyebrow{margin-bottom:29px}
+    .hero h1{font-size:clamp(2.65rem,7.3vw,6.15rem);line-height:.98;letter-spacing:-.07em;font-weight:900;text-wrap:balance}
+    .fixed-line{display:block;color:var(--text)}
+    .phrase-slot{display:block;position:relative;height:1.12em;margin-top:.12em;color:var(--green);overflow:hidden}
+    .phrase{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+    .phrase.out{animation:phrase-out .28s ease forwards}
+    .phrase.in{animation:phrase-in .42s cubic-bezier(.2,.8,.2,1) forwards}
+    @keyframes phrase-out{to{opacity:0;transform:translateY(-28%)}}
+    @keyframes phrase-in{from{opacity:0;transform:translateY(35%)}to{opacity:1;transform:none}}
+    .hero-copy{max-width:670px;margin:32px auto 0;color:var(--muted);font-size:clamp(1rem,1.8vw,1.17rem)}
+    .hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:34px}
+    .primary,.secondary{min-height:50px;padding:0 22px;border:1px solid transparent}
+    .primary{background:var(--green);color:#06100b}
+    .secondary{border-color:var(--line);background:rgba(255,255,255,.025);color:var(--text)}
+    .secondary:hover{border-color:var(--green-line);background:var(--green-soft)}
+    .arrow{transition:transform .2s}.primary:hover .arrow,.card-link:hover .arrow{transform:translateX(4px)}
+    .hero-note{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:25px;color:var(--muted-2);font-size:.82rem}
+    .hero-note span{display:inline-block;width:24px;height:1px;background:var(--green-line)}
+
+    section{padding:104px 0;border-top:1px solid var(--line)}
+    .section-head{display:grid;grid-template-columns:.78fr 1.22fr;gap:64px;align-items:end;margin-bottom:46px}
+    .section-head h2{font-size:clamp(2rem,4.3vw,3.65rem);line-height:1.04;letter-spacing:-.055em;margin-top:18px;text-wrap:balance}
+    .section-head p{color:var(--muted);font-size:1.04rem;max-width:570px;justify-self:end}
+
+    .product-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .product-card{position:relative;min-height:300px;padding:28px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,border-color .25s,background .25s}
+    .product-card::after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:var(--module);filter:blur(90px);opacity:.09;right:-50px;top:-60px;transition:opacity .25s}
+    .product-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--module) 38%,transparent)}
+    .product-card:hover::after{opacity:.2}
+    .tax{grid-column:span 6;--module:var(--yellow);border-color:rgba(255,216,77,.26);background:linear-gradient(145deg,rgba(255,216,77,.095),rgba(255,255,255,.018))}
+    .future{grid-column:span 2;--module:var(--module-color)}
+    .finance{--module-color:var(--blue)}.storage{--module-color:var(--orange)}.hr{--module-color:var(--lime)}
+    .product-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .module-mark{width:11px;height:11px;border-radius:4px;background:var(--module);box-shadow:0 0 20px color-mix(in srgb,var(--module) 60%,transparent)}
+    .status{font-size:.7rem;font-weight:750;text-transform:uppercase;letter-spacing:.07em;padding:5px 9px;border-radius:999px;color:var(--module);border:1px solid color-mix(in srgb,var(--module) 25%,transparent);background:color-mix(in srgb,var(--module) 8%,transparent)}
+    .product-card h3{font-size:clamp(1.35rem,2.3vw,2rem);letter-spacing:-.04em;margin-top:52px}
+    .product-card p{color:var(--muted);font-size:.92rem;margin-top:10px;max-width:470px}
+    .card-link{display:inline-flex;align-items:center;gap:8px;color:var(--module);font-weight:700;font-size:.88rem;margin-top:auto;padding-top:26px;width:max-content}
+    .future .product-card p{font-size:.84rem}.future h3{font-size:1.3rem}
+    .quiet{margin-top:auto;padding-top:26px;color:var(--muted-2);font-size:.78rem;font-weight:650}
+
+    .platform{position:relative;overflow:hidden}
+    .platform::before{content:"";position:absolute;inset:20% auto auto 50%;width:680px;height:420px;transform:translateX(-50%);background:rgba(0,255,136,.07);filter:blur(120px);pointer-events:none}
+    .principles{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:rgba(255,255,255,.02);position:relative}
+    .principle{padding:38px;min-height:260px}.principle+.principle{border-left:1px solid var(--line)}
+    .number{font-size:.75rem;color:var(--green);font-weight:800;letter-spacing:.08em}
+    .principle h3{font-size:1.4rem;letter-spacing:-.035em;margin:50px 0 10px}
+    .principle p{color:var(--muted);font-size:.92rem}
+
+    .roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .roadmap-card{padding:30px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);min-height:230px;position:relative}
+    .roadmap-card.current{border-color:var(--green-line);background:linear-gradient(145deg,var(--green-soft),var(--surface))}
+    .roadmap-card .label{color:var(--green);font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+    .roadmap-card h3{font-size:1.45rem;letter-spacing:-.035em;margin:42px 0 9px}
+    .roadmap-card p{color:var(--muted);font-size:.9rem}
+    .roadmap-card::before{content:"";position:absolute;left:30px;top:58px;width:calc(100% - 60px);height:1px;background:var(--line)}
+
+    .manifesto{padding:128px 0;text-align:center}
+    .manifesto-inner{max-width:850px;margin:auto}
+    .manifesto h2{font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.03;letter-spacing:-.06em;text-wrap:balance}
+    .manifesto h2 span{color:var(--green)}
+    .manifesto p{color:var(--muted);font-size:1.05rem;max-width:650px;margin:25px auto 0}
+    .manifesto .primary{margin-top:34px}
+
+    footer{border-top:1px solid var(--line);padding:34px 0;color:var(--muted-2);font-size:.82rem}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;gap:20px}.footer-brand{font-size:1.08rem}
+
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s cubic-bezier(.2,.8,.2,1)}
+    .reveal.visible{opacity:1;transform:none}
+    :focus-visible{outline:2px solid var(--green);outline-offset:4px}
+
+    @media(max-width:920px){
+      .links{display:none}.burger{display:grid;place-items:center}.nav.open .links{display:flex;position:absolute;left:20px;right:20px;top:76px;padding:18px;flex-direction:column;align-items:stretch;gap:0;background:rgba(17,17,19,.98);border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.45)}.nav.open .links a{padding:12px}.nav.open .nav-cta{margin-top:8px}
+      .section-head{grid-template-columns:1fr;gap:22px}.section-head p{justify-self:start}
+      .tax{grid-column:span 12}.future{grid-column:span 4}
+      .principles{grid-template-columns:1fr}.principle{min-height:auto}.principle+.principle{border-left:0;border-top:1px solid var(--line)}.principle h3{margin-top:26px}
     }
-    
-    body {
-      background-color: var(--bg);
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      overflow: hidden; /* Esconde a barra de rolagem */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+    @media(max-width:650px){
+      .wrap{width:min(100% - 28px,1180px)}.hero{padding:70px 0 50px}.hero h1{font-size:clamp(2.45rem,13vw,4rem)}.phrase-slot{height:2.15em}.phrase{align-items:flex-start}
+      .hero-actions{flex-direction:column}.hero-actions a{width:100%}
+      section{padding:78px 0}.product-card{min-height:260px}.future{grid-column:span 12;min-height:220px}.future h3{margin-top:38px}
+      .roadmap-grid{grid-template-columns:1fr}.footer-inner{align-items:flex-start;flex-direction:column}
     }
-    
-    /* Fundo da Constelação */
-    #fx {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
-    }
-    
-    /* Caixa de Conteúdo Central */
-    .content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 3rem 2rem;
-      background: rgba(5, 5, 5, 0.4);
-      border-radius: 24px;
-      backdrop-filter: blur(12px); /* Efeito de vidro */
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 255, 136, 0.15);
-      max-width: 600px;
-      width: 90%;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    }
-    
-    .logo {
-      font-size: 3rem;
-      font-weight: 800;
-      margin-bottom: 1.5rem;
-      letter-spacing: -1.5px;
-    }
-    
-    .logo span { 
-      color: var(--g); 
-      text-shadow: 0 0 20px rgba(0, 255, 136, 0.4); 
-    }
-    
-    .title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
-      color: #f1f1f1;
-    }
-    
-    /* Container para segurar o espaço da frase que muda */
-    .phrase-container {
-      min-height: 80px; 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .phrase {
-      font-size: 1.15rem;
-      color: var(--g);
-      font-weight: 500;
-      line-height: 1.5;
-      opacity: 1;
-      transition: opacity 0.6s ease;
-    }
-    
-    /* Classe para fazer o texto sumir suavemente */
-    .phrase.fade { 
-      opacity: 0; 
-    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+
+    .hero h1{line-height:1.1}
+    .phrase-slot{display:grid;height:auto;overflow:visible;line-height:1.15;padding-bottom:.1em}
+    .phrase{position:static;grid-area:1/1;display:block;opacity:0;visibility:hidden;transform:translateY(.15em);transition:opacity .35s,transform .35s,visibility .35s;overflow-wrap:anywhere}
+    .phrase.active{opacity:1;visibility:visible;transform:none}
+    .services-menu{position:relative}
+    .services-menu summary{cursor:pointer;list-style:none;padding:12px 0;display:flex;gap:8px;align-items:center}
+    .services-menu summary::-webkit-details-marker{display:none}
+    .services-menu[open] summary{color:var(--green)}
+    .services-panel{position:absolute;top:100%;right:0;width:min(420px,calc(100vw - 40px));max-height:calc(100svh - 110px);overflow:auto;padding:8px 20px;background:#111113;border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 70px #0009}
+    .services-panel article{padding:17px 0}.services-panel article+article{border-top:1px solid var(--line)}
+    .services-panel h3{color:var(--module);font-size:1rem}.services-panel strong{display:block;font-size:.875rem;color:#d4d4d8;margin:3px 0 6px}.services-panel p{font-size:.875rem;color:#b5b5bf;font-weight:400}
+    .secondary{cursor:pointer}.hero-note{color:#a1a1aa;flex-wrap:wrap}.eyebrow{font-size:.875rem}
+    @media(max-width:920px){.nav.open .links{max-height:calc(100svh - 100px);overflow:auto}.services-menu summary{padding:12px}.services-panel{position:static;width:100%;max-height:none;box-shadow:none;background:#18181b}.hero h1{font-size:clamp(2.4rem,7.3vw,5rem)}}
+    @media(max-width:650px){.phrase-slot{height:auto}.hero-actions button{width:100%}.hero-note{font-size:.875rem}.hero h1{font-size:clamp(2.2rem,10vw,3.8rem)}}
+
+    .tax-intro{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;padding:clamp(24px,5vw,56px);border:1px solid rgba(255,216,77,.26);border-radius:var(--radius);background:linear-gradient(125deg,rgba(255,216,77,.08),rgba(255,255,255,.02))}
+    .tax-label{font-size:.875rem;color:#c4c4cc}.tax-intro h2{font-size:clamp(2rem,4.5vw,3.4rem);letter-spacing:-.05em;line-height:1.2;margin:12px 0 18px}.tax-intro h2 span{color:var(--yellow)}
+    .tax-status{font-size:.875rem;color:var(--yellow);display:block}.tax-intro p{font-size:1.125rem;color:#d4d4d8;max-width:480px}
+    .hero h1{font-size:clamp(2.4rem,6vw,4.9rem)}
+    @media(max-width:650px){.tax-intro{grid-template-columns:1fr;gap:24px}.hero h1{font-size:clamp(2.2rem,9vw,3.5rem)}.hero .primary{white-space:normal;text-align:center}}
   </style>
 </head>
 <body>
+  <header id="header">
+    <div class="wrap nav" id="nav">
+      <a href="#inicio" class="logo brand" aria-label="FastNexus, início">Fast<em>Nexus</em></a>
+      <nav class="links" aria-label="Navegação principal">
+        <details class="services-menu" id="services-menu">
+          <summary>Serviços <span aria-hidden="true">⌄</span></summary>
+          <div class="services-panel">
+            <article style="--module:var(--yellow)"><h3>Tax</h3><strong>Em fase final de desenvolvimento</strong><p>Consulta de NCM, CEST e CFOP com informações tributárias organizadas.</p></article>
+            <article style="--module:var(--blue)"><h3>Financeiro</h3><strong>Em breve · Em desenvolvimento</strong><p>Organização de receitas, despesas e visão financeira.</p></article>
+            <article style="--module:var(--orange)"><h3>Estoque</h3><strong>Em breve · Em desenvolvimento</strong><p>Controle de produtos, saldos e movimentações.</p></article>
+            <article style="--module:var(--lime)"><h3>Recursos humanos</h3><strong>Em breve · Em desenvolvimento</strong><p>Organização de pessoas e rotinas da equipe.</p></article>
+          </div>
+        </details>
+        <a href="#plataforma">Plataforma</a>
+        <a href="#visao">Visão</a>
+        <a href="#sobre">Sobre</a>
 
-  <canvas id="fx"></canvas>
-
-  <div class="content">
-    <div class="logo">Fast<span>Nexus</span></div>
-    <div class="title">Estamos preparando algo incrível.</div>
-    
-    <div class="phrase-container">
-      <div class="phrase" id="dynamic-text">O controle total da sua operação está prestes a ganhar um novo significado.</div>
+      </nav>
+      <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false"><span aria-hidden="true">☰</span></button>
     </div>
-  </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap hero-inner">
+
+        <h1>
+          <span class="fixed-line">Menos complicação na sua rotina.</span>
+          <span class="phrase-slot"><span class="phrase active">Mais clareza para decidir.</span><span class="phrase" aria-hidden="true">Mais tempo para o que importa.</span><span class="phrase" aria-hidden="true">Mais organização para crescer.</span></span>
+        </h1>
+        <p class="hero-copy">Ferramentas para simplificar o dia a dia do seu negócio. Estamos começando pela consulta tributária com o FastNexus Tax e preparando novas soluções para outras áreas da operação.</p>
+        <div class="hero-actions"><a class="primary" href="#tax">Conheça nosso primeiro produto <span class="arrow" aria-hidden="true">↓</span></a></div>
+
+      </div>
+    </section>
+
+    <section id="tax" aria-labelledby="tax-title">
+      <div class="wrap">
+        <article class="tax-intro reveal">
+          <div><span class="tax-label">Nosso primeiro produto</span><h2 id="tax-title">FastNexus <span>Tax</span></h2><span class="tax-status">Em fase final de desenvolvimento</span></div>
+          <p>Encontre NCM, CEST e CFOP em uma experiência de consulta simples e organizada.</p>
+        </article>
+      </div>
+    </section>
+    <section class="platform" id="plataforma">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">Plataforma</div><h2>Comece pelo que precisa.<br>Amplie quando fizer sentido.</h2></div>
+          <p>Nossa proposta é permitir que você escolha as ferramentas que ajudam na sua rotina e acrescente novas soluções conforme seu negócio cresce.</p>
+        </div>
+        <div class="principles reveal">
+          <article class="principle"><span class="number">01 — CLAREZA</span><h3>Encontre o que importa</h3><p>Informações organizadas para facilitar a consulta e ajudar você a entender o próximo passo.</p></article>
+          <article class="principle"><span class="number">02 — FLEXIBILIDADE</span><h3>No ritmo do seu negócio</h3><p>Comece com uma solução específica. Nossa visão é oferecer novas ferramentas para acompanhar suas necessidades.</p></article>
+          <article class="principle"><span class="number">03 — CONFIANÇA</span><h3>Saiba de onde vem</h3><p>No Tax, a proposta é apresentar a origem e a atualização das informações para dar contexto a cada consulta.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="visao">
+      <div class="wrap section-head reveal" style="margin-bottom:0">
+        <div><div class="eyebrow">Visão</div><h2>Mais soluções.<br>A mesma simplicidade.</h2></div>
+        <p>Começamos pela consulta tributária. Nossa visão é ampliar a plataforma para ajudar em outras áreas do seu negócio, como financeiro, estoque e gestão de pessoas.</p>
+      </div>
+    </section>
+
+    <section class="manifesto" id="sobre">
+      <div class="wrap manifesto-inner reveal">
+        <h2>Seu negócio em movimento.<br><span>A simplicidade acompanha.</span></h2>
+        <p>Acreditamos que boas ferramentas tornam o trabalho mais claro e deixam mais tempo para cuidar do seu negócio. É essa ideia que orienta a FastNexus.</p>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span class="footer-brand brand">Fast<em>Nexus</em></span>
+      <span>Produtos digitais para operações mais simples.</span>
+      <span>© <span id="year"></span> FastNexus</span>
+    </div>
+  </footer>
 
   <script>
-    // ─── [1] SISTEMA DE FRASES ALTERNADAS ───
-    const phrases = [
-      "Estamos nos bastidores construindo a sua próxima grande vantagem competitiva.",
-      "O próximo grande passo da sua gestão começa aqui. Estamos preparando algo incrível.",
-      "Transformando a complexidade do dia a dia em visão estratégica. Em breve.",
-      "A evolução que une inteligência de ponta e controle real está chegando."
-    ];
-    
-    let currentPhrase = 0;
-    const textElement = document.getElementById('dynamic-text');
-
-    // Troca a frase a cada 4 segundos
-    setInterval(() => {
-      textElement.classList.add('fade'); // Faz o texto sumir
-      
-      setTimeout(() => {
-        // Muda o texto enquanto está invisível
-        currentPhrase = (currentPhrase + 1) % phrases.length;
-        textElement.textContent = phrases[currentPhrase];
-        
-        // Faz o texto aparecer de novo
-        textElement.classList.remove('fade');
-      }, 600); // Tempo de espera para completar o sumiço
-    }, 4000); 
-
-    // ─── [2] PARTICLES (Constelação + Interação do Mouse) ───
-    (function(){
-      const c = document.getElementById('fx'), x = c.getContext('2d');
-      let W, H, pts = [];
-      const resize = () => { W = c.width = innerWidth; H = c.height = innerHeight };
-      resize(); 
-      addEventListener('resize', resize, {passive: true});
-
-      let mouse = { x: null, y: null, radius: 120 };
-      addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }, {passive: true});
-      addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; }, {passive: true});
-      
-      function P(){ this.reset() }
-      P.prototype.reset = function(){
-        this.x = Math.random() * W;
-        this.y = Math.random() * H;
-        this.r = Math.random() * 2.2 + 0.8; 
-        this.speed = Math.random() * .10 + .03;
-        this.angle = Math.random() * Math.PI * 2;
-        this.alpha = Math.random() * .8 + .4; 
-        this.life = 0;
-        this.max = Math.random() * 400 + 400; // Vida longa
-      };
-
-      P.prototype.tick = function(){
-        this.x += Math.cos(this.angle) * this.speed;
-        this.y += Math.sin(this.angle) * this.speed - .05;
-        
-        // Efeito de fuga do mouse
-        if (mouse.x != null && mouse.y != null) {
-          let dx = this.x - mouse.x; let dy = this.y - mouse.y;
-          let d = Math.sqrt(dx*dx + dy*dy);
-          if (d < mouse.radius) {
-            let f = (mouse.radius - d) / mouse.radius;
-            this.x += (dx / d) * f * 3; this.y += (dy / d) * f * 3;
-          }
-        }
-        
-        this.life++;
-        if (this.life > this.max || this.y < -10 || this.x < -10 || this.x > W + 10) this.reset();
-      };
-
-      P.prototype.draw = function(){
-        const f = this.life < 100 ? this.life / 100 : this.life > this.max - 100 ? (this.max - this.life) / 100 : 1;
-        x.beginPath(); x.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        x.shadowBlur = 8; x.shadowColor = 'rgba(0,255,136,0.8)';
-        x.fillStyle = `rgba(0,255,136,${this.alpha * f})`; x.fill();
-        x.shadowBlur = 0; 
-      };
-
-      // Quantidade de partículas
-      const N = innerWidth < 600 ? 50 : 120;
-      for(let i = 0; i < N; i++) pts.push(new P());
-
-      (function loop(){
-        x.clearRect(0, 0, W, H);
-        pts.forEach(p => { p.tick(); p.draw(); });
-        
-        // Conexões (Linhas)
-        for(let i = 0; i < N; i++) {
-          for(let j = i + 1; j < N; j++) {
-            let dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-            let d = Math.sqrt(dx*dx + dy*dy);
-            if(d < 150) { 
-              x.beginPath(); x.strokeStyle = `rgba(0, 255, 136, ${(1 - d/150) * 0.3})`; 
-              x.lineWidth = 1.5; x.moveTo(pts[i].x, pts[i].y); x.lineTo(pts[j].x, pts[j].y); x.stroke();
-            }
-          }
-        }
-        requestAnimationFrame(loop)
-      })();
-    })();
+    const phrases=[...document.querySelectorAll('.phrase')];
+    let phraseIndex=0;
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      setInterval(()=>{
+        if(document.hidden) return;
+        phrases[phraseIndex].classList.remove('active');
+        phrases[phraseIndex].setAttribute('aria-hidden','true');
+        phraseIndex=(phraseIndex+1)%phrases.length;
+        phrases[phraseIndex].classList.add('active');
+        phrases[phraseIndex].removeAttribute('aria-hidden');
+      },5200);
+    }
+    const header=document.getElementById("header");
+    addEventListener("scroll",()=>header.classList.toggle("scrolled",scrollY>10),{passive:true});
+    const burger=document.getElementById("burger"),nav=document.getElementById("nav");
+    burger.addEventListener("click",()=>{const open=nav.classList.toggle("open");burger.setAttribute("aria-expanded",String(open));burger.firstElementChild.textContent=open?"×":"☰"});
+    document.querySelectorAll(".links a").forEach(link=>link.addEventListener("click",()=>{nav.classList.remove("open");burger.setAttribute("aria-expanded","false");burger.firstElementChild.textContent="☰"}));
+    const services=document.getElementById('services-menu');
+    document.addEventListener('click',event=>{if(!services.contains(event.target))services.open=false;});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'){if(services.open){services.open=false;services.querySelector('summary').focus();}else{nav.classList.remove('open');burger.setAttribute('aria-expanded','false');burger.firstElementChild.textContent='☰';burger.focus();}}});
+    const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("visible");observer.unobserve(entry.target)}}),{threshold:.12});
+    document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+    document.getElementById("year").textContent=new Date().getFullYear();
   </script>
 </body>
 </html>
